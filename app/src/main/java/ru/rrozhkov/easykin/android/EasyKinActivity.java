@@ -5,11 +5,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.Collection;
+
+import ru.rrozhkov.easykin.android.ws.client.EasyKinService;
+import ru.rrozhkov.easykin.android.ws.client.bean.CategoryBean;
+import ru.rrozhkov.lib.collection.CollectionUtil;
 
 public class EasyKinActivity extends AppCompatActivity {
+
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +27,20 @@ public class EasyKinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_easy_kin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        EasyKinService service = new EasyKinService();
+        Collection<CategoryBean> beans = service.categories();
+        Collection<String> cats = CollectionUtil.create();
+        for(CategoryBean bean : beans){
+            cats.add(bean.getName());
+        }
+        String[] values = cats.toArray(new String[beans.size()]);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+        listView = (ListView) findViewById(R.id.categoryList);
+        listView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
