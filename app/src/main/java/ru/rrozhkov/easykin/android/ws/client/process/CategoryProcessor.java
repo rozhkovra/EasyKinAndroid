@@ -7,6 +7,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.Collection;
 
+import ru.rrozhkov.easykin.android.model.category.impl.convert.SoapCategoryConverter;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.lib.collection.CollectionUtil;
@@ -39,15 +40,11 @@ public class CategoryProcessor {
         try {
             androidHttpTransport.call(SOAP_ACTION, envelope);
 
-            SoapObject response = (SoapObject) envelope.getResponse();
-
             SoapObject result = (SoapObject)envelope.bodyIn;
             categories.clear();
             for(int i= 0; i< result.getPropertyCount(); i++){
                 SoapObject object = (SoapObject)result.getProperty(i);
-                ICategory bean = CategoryFactory.create(
-                        Integer.valueOf(object.getProperty("id").toString())
-                        ,object.getProperty("name").toString());
+                ICategory bean = new SoapCategoryConverter().convert(object);
                 categories.add(bean);
             }
         } catch (Exception e) {

@@ -25,7 +25,7 @@ public class MasterDataContext {
         return categories;
     }
 
-    public Collection<ITask> getTasks() {
+    public Collection<ITask> tasks() {
         return tasks;
     }
 }

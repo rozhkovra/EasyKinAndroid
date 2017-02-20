@@ -8,6 +8,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.Collection;
 import java.util.Date;
 
+import ru.rrozhkov.easykin.android.model.task.impl.convert.SoapTaskConverter;
 import ru.rrozhkov.easykin.android.ws.client.util.DateUtil;
 import ru.rrozhkov.easykin.model.category.Category;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
@@ -46,28 +47,11 @@ public class TaskProcessor {
         try {
             androidHttpTransport.call(SOAP_ACTION, envelope);
 
-            SoapObject response = (SoapObject) envelope.getResponse();
-
             SoapObject result = (SoapObject)envelope.bodyIn;
             tasks.clear();
             for(int i= 0; i< result.getPropertyCount(); i++){
                 SoapObject object = (SoapObject)result.getProperty(i);
-                Date closeDate = null;
-                try{
-                    closeDate = DateUtil.parseWs(object.getProperty("closeDate").toString());
-                }catch(RuntimeException re){
-
-                }
-                ITask bean = TaskFactory.createTask(
-                        Integer.valueOf(object.getProperty("id").toString())
-                        , object.getProperty("name").toString()
-                        , DateUtil.parseWs(object.getProperty("createDate").toString())
-                        , DateUtil.parseWs(object.getProperty("planDate").toString())
-                        , Priority.priority(Integer.valueOf(object.getProperty("priority").toString()))
-                        , CategoryFactory.create(Integer.valueOf(object.getProperty("category").toString()), "")
-                        , closeDate
-                        , Status.status(Integer.valueOf(object.getProperty("status").toString()))
-                );
+                ITask bean = new SoapTaskConverter().convert(object);
                 tasks.add(bean);
             }
         } catch (Exception e) {
