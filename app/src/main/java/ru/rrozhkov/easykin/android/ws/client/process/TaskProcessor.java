@@ -6,24 +6,31 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.Collection;
+import java.util.Date;
 
+import ru.rrozhkov.easykin.android.ws.client.util.DateUtil;
+import ru.rrozhkov.easykin.model.category.Category;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
+import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.easykin.model.task.Priority;
+import ru.rrozhkov.easykin.model.task.Status;
+import ru.rrozhkov.easykin.model.task.impl.TaskFactory;
 import ru.rrozhkov.lib.collection.CollectionUtil;
 
 /**
  * Created by rrozhkov on 2/17/2017.
  */
 
-public class CategoryProcessor {
-    private static final String METHOD_NAME = "categories";
-    private static final String SOAP_ACTION = "http://rrozhkov.ru/easykin/categories";
+public class TaskProcessor {
+    private static final String METHOD_NAME = "tasks";
+    private static final String SOAP_ACTION = "http://rrozhkov.ru/easykin/tasks";
     private String namespace;
     private String url;
-    private Collection<ICategory> categories = CollectionUtil.create();
+    private Collection<ITask> tasks = CollectionUtil.create();
     private boolean complete = false;
 
-    public CategoryProcessor(String namespace, String url) {
+    public TaskProcessor(String namespace, String url) {
         this.namespace = namespace;
         this.url = url;
     }
@@ -42,13 +49,26 @@ public class CategoryProcessor {
             SoapObject response = (SoapObject) envelope.getResponse();
 
             SoapObject result = (SoapObject)envelope.bodyIn;
-            categories.clear();
+            tasks.clear();
             for(int i= 0; i< result.getPropertyCount(); i++){
                 SoapObject object = (SoapObject)result.getProperty(i);
-                ICategory bean = CategoryFactory.create(
+                Date closeDate = null;
+                try{
+                    closeDate = DateUtil.parseWs(object.getProperty("closeDate").toString());
+                }catch(RuntimeException re){
+
+                }
+                ITask bean = TaskFactory.createTask(
                         Integer.valueOf(object.getProperty("id").toString())
-                        ,object.getProperty("name").toString());
-                categories.add(bean);
+                        , object.getProperty("name").toString()
+                        , DateUtil.parseWs(object.getProperty("createDate").toString())
+                        , DateUtil.parseWs(object.getProperty("planDate").toString())
+                        , Priority.priority(Integer.valueOf(object.getProperty("priority").toString()))
+                        , CategoryFactory.create(Integer.valueOf(object.getProperty("category").toString()), "")
+                        , closeDate
+                        , Status.status(Integer.valueOf(object.getProperty("status").toString()))
+                );
+                tasks.add(bean);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -56,8 +76,8 @@ public class CategoryProcessor {
         }
     }
 
-    public Collection<ICategory> result(){
-        return categories;
+    public Collection<ITask> result(){
+        return tasks;
     }
 
     public void setComplete(boolean complete){

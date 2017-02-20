@@ -13,9 +13,9 @@ import android.widget.ListView;
 
 import java.util.Collection;
 
-import ru.rrozhkov.easykin.android.ws.client.EasyKinService;
-import ru.rrozhkov.easykin.android.ws.client.bean.CategoryBean;
-import ru.rrozhkov.lib.collection.CollectionUtil;
+import ru.rrozhkov.easykin.android.context.MasterDataContext;
+import ru.rrozhkov.easykin.android.model.category.impl.convert.CategoryArrayConverter;
+import ru.rrozhkov.easykin.model.category.ICategory;
 
 public class EasyKinActivity extends AppCompatActivity {
 
@@ -28,16 +28,13 @@ public class EasyKinActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        EasyKinService service = new EasyKinService();
-        Collection<CategoryBean> beans = service.categories();
-        Collection<String> cats = CollectionUtil.create();
-        for(CategoryBean bean : beans){
-            cats.add(bean.getName());
-        }
-        String[] values = cats.toArray(new String[beans.size()]);
+        MasterDataContext context = new MasterDataContext();
+        context.init();
+        Collection<ICategory> beans = context.categories();
+        CategoryArrayConverter converter = new CategoryArrayConverter();
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                android.R.layout.simple_list_item_1, android.R.id.text1, converter.convert(beans));
 
         listView = (ListView) findViewById(R.id.categoryList);
         listView.setAdapter(adapter);
