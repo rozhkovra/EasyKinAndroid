@@ -19,6 +19,7 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
+import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView listView;
+    private MasterDataContext context = new MasterDataContext();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +38,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        MasterDataContext context = new MasterDataContext();
         context.init();
-        Collection<ITask> beans = FilterUtil.filter(context.tasks(), TaskFilterFactory.status(Status.OPEN));
-        TaskArrayConverter converter = new TaskArrayConverter();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, converter.convert(beans));
-
         listView = (ListView) findViewById(R.id.taskLst);
+
+        Collection<ITask> beans = context.tasks();
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
         listView.setAdapter(adapter);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,10 +64,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-
+        navigationView.getMenu().add(0,0,0,"Все");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(category.getName());
+            navigationView.getMenu().add(0,category.getId(),0,category.getName());
         }
     }
 
@@ -109,30 +108,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        String name = item.getTitle().toString();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        Collection<ITask> beans = context.tasks();
+        if(id>0){
+            beans = FilterUtil.filter(beans, TaskFilterFactory.category(CategoryFactory.create(id,name)));
         }
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
+        listView.setAdapter(adapter);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-   }
-
-
 }
