@@ -16,6 +16,9 @@ import ru.rrozhkov.easykin.android.model.category.impl.convert.CategoryArrayConv
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.easykin.model.task.Status;
+import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
+import ru.rrozhkov.lib.filter.util.FilterUtil;
 
 public class TaskListActivity extends AppCompatActivity {
 
@@ -30,7 +33,7 @@ public class TaskListActivity extends AppCompatActivity {
 
         MasterDataContext context = new MasterDataContext();
         context.init();
-        Collection<ITask> beans = context.tasks();
+        Collection<ITask> beans = FilterUtil.filter(context.tasks(), TaskFilterFactory.status(Status.OPEN));
         TaskArrayConverter converter = new TaskArrayConverter();
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
