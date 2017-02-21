@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
+import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.task.ITask;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity
 
         Collection<ITask> beans = context.tasks();
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
+                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
         listView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -115,12 +116,12 @@ public class MainActivity extends AppCompatActivity
 
         setTitle("EasyKin");
         Collection<ITask> beans = context.tasks();
-        if(id>0){
+        if(id>0 && id!=9){
             setTitle("EasyKin\\"+name);
             beans = FilterUtil.filter(beans, TaskFilterFactory.category(CategoryFactory.create(id,name)));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
+                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
         listView.setAdapter(adapter);
 
 

@@ -7,6 +7,7 @@ import java.util.Collection;
 import ru.rrozhkov.easykin.android.ws.client.process.CategoryProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.TaskProcessor;
 import ru.rrozhkov.easykin.model.category.ICategory;
+import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 
@@ -52,5 +53,8 @@ public class EasyKinService {
 
         }
         return processor.result();
+    }
+    public Collection<IPayment> payments() {
+        return null;
     }
 }
