@@ -3,6 +3,7 @@ package ru.rrozhkov.easykin.android;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("EasyKin");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context.init();
@@ -64,10 +66,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-        navigationView.getMenu().add(0,0,0,"Все");
+        final SubMenu subMenu = navigationView.getMenu().addSubMenu("Категории");
+        subMenu.add(0,0,0,"Все");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(0,category.getId(),0,category.getName());
+            subMenu.add(0,category.getId(),0,category.getName());
         }
     }
 
@@ -110,8 +113,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         String name = item.getTitle().toString();
 
+        setTitle("EasyKin");
         Collection<ITask> beans = context.tasks();
         if(id>0){
+            setTitle("EasyKin\\"+name);
             beans = FilterUtil.filter(beans, TaskFilterFactory.category(CategoryFactory.create(id,name)));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
