@@ -19,10 +19,12 @@ import android.widget.ListView;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
+import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
+import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
@@ -114,15 +116,34 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         String name = item.getTitle().toString();
 
-        setTitle("EasyKin");
         Collection<ITask> beans = context.tasks();
-        if(id>0 && id!=9){
+        if(id==0 || id==9) {
+            setTitle("EasyKin");
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
+            listView.setAdapter(adapter);
+        }
+        if(id>0 && id!=9 && id!=5 && id!=6){
             setTitle("EasyKin\\"+name);
             beans = FilterUtil.filter(beans, TaskFilterFactory.category(CategoryFactory.create(id,name)));
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
+            listView.setAdapter(adapter);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
-        listView.setAdapter(adapter);
+        if(id==5){
+            setTitle("EasyKin\\"+name);
+            Collection<IPayment> payments = context.finance();
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
+            listView.setAdapter(adapter);
+        }
+        if(id==6){
+            setTitle("EasyKin\\"+name);
+            Collection<IPayment> payments = context.factPayments();
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
+            listView.setAdapter(adapter);
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

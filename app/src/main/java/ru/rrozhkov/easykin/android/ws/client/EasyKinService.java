@@ -4,8 +4,11 @@ import android.os.AsyncTask;
 
 import java.util.Collection;
 
-import ru.rrozhkov.easykin.android.ws.client.process.CategoryProcessor;
-import ru.rrozhkov.easykin.android.ws.client.process.TaskProcessor;
+import ru.rrozhkov.easykin.android.ws.client.process.IProcessor;
+import ru.rrozhkov.easykin.android.ws.client.process.impl.CategoryProcessor;
+import ru.rrozhkov.easykin.android.ws.client.process.impl.PaymentProcessor;
+import ru.rrozhkov.easykin.android.ws.client.process.impl.ProcessRunner;
+import ru.rrozhkov.easykin.android.ws.client.process.impl.TaskProcessor;
 import ru.rrozhkov.easykin.android.ws.client.time.Timer;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
@@ -21,41 +24,24 @@ public class EasyKinService {
     private static final String URL = "http://172.31.46.6:8081/EasyKinService/?wsdl";
 
     public Collection<ICategory> categories() {
-        final CategoryProcessor processor = new CategoryProcessor(NAMESPACE, URL);
-        AsyncTask task = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                processor.process();
-                return null;
-            }
-        };
-        task.execute();
-        Timer timer = new Timer(10000);
-        while(!processor.isComplete() && !timer.isExpired()){
-
-        }
+        final IProcessor processor = new CategoryProcessor(NAMESPACE, URL);
+        ProcessRunner runner = new ProcessRunner(processor);
+        runner.run();
         return processor.result();
     }
     public Collection<IPerson> persons() {
         return null;
     }
     public Collection<ITask> tasks() {
-        final TaskProcessor processor = new TaskProcessor(NAMESPACE, URL);
-        AsyncTask task = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                processor.process();
-                return null;
-            }
-        };
-        task.execute();
-        Timer timer = new Timer(10000);
-        while(!processor.isComplete() && !timer.isExpired()){
-
-        }
+        final IProcessor processor = new TaskProcessor(NAMESPACE, URL);
+        ProcessRunner runner = new ProcessRunner(processor);
+        runner.run();
         return processor.result();
     }
     public Collection<IPayment> payments() {
-        return null;
+        final IProcessor processor = new PaymentProcessor(NAMESPACE, URL);
+        ProcessRunner runner = new ProcessRunner(processor);
+        runner.run();
+        return processor.result();
     }
 }

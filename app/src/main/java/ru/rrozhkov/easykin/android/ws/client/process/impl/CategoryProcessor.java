@@ -1,4 +1,4 @@
-package ru.rrozhkov.easykin.android.ws.client.process;
+package ru.rrozhkov.easykin.android.ws.client.process.impl;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -16,17 +16,13 @@ import ru.rrozhkov.lib.collection.CollectionUtil;
  * Created by rrozhkov on 2/17/2017.
  */
 
-public class CategoryProcessor {
+public class CategoryProcessor extends Processor {
     private static final String METHOD_NAME = "categories";
     private static final String SOAP_ACTION = "http://rrozhkov.ru/easykin/categories";
-    private String namespace;
-    private String url;
     private Collection<ICategory> categories = CollectionUtil.create();
-    private boolean complete = false;
 
     public CategoryProcessor(String namespace, String url) {
-        this.namespace = namespace;
-        this.url = url;
+        super(namespace, url);
     }
 
     public void process(){
@@ -56,13 +52,5 @@ public class CategoryProcessor {
 
     public Collection<ICategory> result(){
         return categories;
-    }
-
-    public void setComplete(boolean complete){
-        this.complete = complete;
-    }
-
-    public boolean isComplete() {
-        return complete;
     }
 }
