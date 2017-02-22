@@ -16,7 +16,7 @@ public class TaskArrayStatusConverter implements IConverter<Collection<ITask>, S
         Collection<String> cats = CollectionUtil.create();
         for(ITask bean : tasks){
             if(bean.getStatus().isClose())
-                cats.add("[ЗАКРЫТО]["+bean.getCategory().getName()+"] "+bean.getName());
+                cats.add("["+bean.getStatus().toString()+"]["+bean.getCategory().getName()+"] "+bean.getName());
             else
                 cats.add("["+bean.getCategory().getName()+"] "+bean.getName());
         }

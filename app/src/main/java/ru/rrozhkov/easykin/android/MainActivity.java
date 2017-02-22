@@ -28,6 +28,8 @@ import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
+import ru.rrozhkov.lib.collection.CollectionUtil;
+import ru.rrozhkov.lib.filter.IFilter;
 import ru.rrozhkov.lib.filter.util.FilterUtil;
 
 public class MainActivity extends AppCompatActivity
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity
 
     private ListView listView;
     private MasterDataContext context = new MasterDataContext();
+    private IFilter categoryFilter = null;
+    private IFilter statusFilter = null;
+    private Collection<ITask> beans = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         context.init();
         listView = (ListView) findViewById(R.id.taskLst);
 
-        Collection<ITask> beans = context.tasks();
+        this.beans = context.tasks();
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
         listView.setAdapter(adapter);
@@ -70,10 +75,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
         final SubMenu subMenu = navigationView.getMenu().addSubMenu("Категории");
-        subMenu.add(0,0,0,"Все");
+        subMenu.add(0,1000,0,"Все");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            subMenu.add(0,category.getId(),0,category.getName());
+            subMenu.add(0,1000+category.getId(),0,category.getName());
+        }
+        final SubMenu subMenu2 = navigationView.getMenu().addSubMenu("Статус");
+        subMenu2.add(0,2000,0,"Все");
+        for(Status status : context.statuses()){
+            subMenu2.add(0,2000+Status.status(status),0,status.toString());
         }
     }
 
@@ -115,36 +125,49 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         String name = item.getTitle().toString();
-
-        Collection<ITask> beans = context.tasks();
-        if(id==0 || id==9) {
+        this.beans = context.tasks();
+        if(id==1000 || id==1009) {
             setTitle("EasyKin");
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
-            listView.setAdapter(adapter);
+            categoryFilter = null;
         }
-        if(id>0 && id!=9 && id!=5 && id!=6){
+        if(id>1000 && id!=1009 && id!=1005 && id!=1006 && id<2000){
             setTitle("EasyKin\\"+name);
-            beans = FilterUtil.filter(beans, TaskFilterFactory.category(CategoryFactory.create(id,name)));
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
-            listView.setAdapter(adapter);
+            categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id-1000,name));
         }
-        if(id==5){
+        if(id==2000) {
+            statusFilter = null;
+        }
+        if(id==2001) {
+            statusFilter = TaskFilterFactory.status(Status.OPEN);
+        }
+        if(id==2002) {
+            statusFilter = TaskFilterFactory.status(Status.CLOSE);
+        }
+/*        if(id==1005){
             setTitle("EasyKin\\"+name);
             Collection<IPayment> payments = context.finance();
             ArrayAdapter<String> adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
             listView.setAdapter(adapter);
         }
-        if(id==6){
+        if(id==1006){
             setTitle("EasyKin\\"+name);
             Collection<IPayment> payments = context.factPayments();
             ArrayAdapter<String> adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
             listView.setAdapter(adapter);
         }
+*/
+        if(statusFilter!=null){
+            beans = FilterUtil.filter(beans, statusFilter);
+        }
+        if(categoryFilter!=null){
+            beans = FilterUtil.filter(beans, categoryFilter);
+        }
 
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
+        listView.setAdapter(adapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

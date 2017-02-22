@@ -8,6 +8,7 @@ import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.fin.payment.PaymentStatus;
 import ru.rrozhkov.easykin.model.fin.payment.impl.filter.PaymentFilterFactory;
 import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.lib.collection.CollectionUtil;
 import ru.rrozhkov.lib.filter.util.FilterUtil;
 
@@ -46,5 +47,10 @@ public class MasterDataContext {
     public Collection<IPayment> factPayments() {
         return FilterUtil.filter(payments(), PaymentFilterFactory.status(PaymentStatus.FACT), PaymentFilterFactory.noFree());
     }
-
+    public Status[] statuses(){
+        return new ru.rrozhkov.easykin.model.task.Status[]{
+                Status.OPEN,
+                Status.CLOSE
+        };
+    }
 }
