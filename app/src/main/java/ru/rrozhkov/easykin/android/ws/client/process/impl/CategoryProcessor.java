@@ -8,9 +8,9 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.model.category.impl.convert.SoapCategoryConverter;
-import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.lib.collection.CollectionUtil;
+import ru.rrozhkov.lib.ws.process.impl.Processor;
 
 /**
  * Created by rrozhkov on 2/17/2017.

@@ -8,10 +8,9 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.SoapPaymentConverter;
-import ru.rrozhkov.easykin.android.model.task.impl.convert.SoapTaskConverter;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
-import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.lib.collection.CollectionUtil;
+import ru.rrozhkov.lib.ws.process.impl.Processor;
 
 /**
  * Created by rrozhkov on 2/17/2017.

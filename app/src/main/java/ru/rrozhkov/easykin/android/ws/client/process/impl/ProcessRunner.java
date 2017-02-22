@@ -2,8 +2,8 @@ package ru.rrozhkov.easykin.android.ws.client.process.impl;
 
 import android.os.AsyncTask;
 
-import ru.rrozhkov.easykin.android.ws.client.process.IProcessor;
-import ru.rrozhkov.easykin.android.ws.client.time.Timer;
+import ru.rrozhkov.lib.timer.Timer;
+import ru.rrozhkov.lib.ws.process.IProcessor;
 
 /**
  * Created by rrozhkov on 2/22/2017.
