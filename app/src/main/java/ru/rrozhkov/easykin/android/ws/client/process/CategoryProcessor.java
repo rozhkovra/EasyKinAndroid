@@ -51,6 +51,7 @@ public class CategoryProcessor {
             System.out.println(e.getMessage());
 
         }
+        complete = true;
     }
 
     public Collection<ICategory> result(){

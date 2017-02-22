@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.ws.client.process.CategoryProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.TaskProcessor;
+import ru.rrozhkov.easykin.android.ws.client.time.Timer;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.person.IPerson;
@@ -25,12 +26,12 @@ public class EasyKinService {
             @Override
             protected Object doInBackground(Object[] params) {
                 processor.process();
-                processor.setComplete(true);
                 return null;
             }
         };
         task.execute();
-        while(!processor.isComplete()){
+        Timer timer = new Timer(10000);
+        while(!processor.isComplete() && !timer.isExpired()){
 
         }
         return processor.result();
@@ -44,12 +45,12 @@ public class EasyKinService {
             @Override
             protected Object doInBackground(Object[] params) {
                 processor.process();
-                processor.setComplete(true);
                 return null;
             }
         };
         task.execute();
-        while(!processor.isComplete()){
+        Timer timer = new Timer(10000);
+        while(!processor.isComplete() && !timer.isExpired()){
 
         }
         return processor.result();

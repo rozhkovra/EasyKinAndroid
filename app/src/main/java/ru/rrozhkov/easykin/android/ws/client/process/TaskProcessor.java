@@ -58,6 +58,7 @@ public class TaskProcessor {
             System.out.println(e.getMessage());
 
         }
+        complete = true;
     }
 
     public Collection<ITask> result(){
