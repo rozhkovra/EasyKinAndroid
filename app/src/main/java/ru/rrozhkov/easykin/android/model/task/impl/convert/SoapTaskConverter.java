@@ -31,7 +31,7 @@ public class SoapTaskConverter implements IConverter<SoapObject, ITask> {
                 , DateUtil.parseWs(object.getProperty("createDate").toString())
                 , DateUtil.parseWs(object.getProperty("planDate").toString())
                 , Priority.priority(Integer.valueOf(object.getProperty("priority").toString()))
-                , CategoryFactory.create(Integer.valueOf(object.getProperty("category").toString()), "")
+                , CategoryFactory.create(Integer.valueOf(object.getProperty("category").toString()), object.getProperty("categoryName").toString())
                 , closeDate
                 , Status.status(Integer.valueOf(object.getProperty("status").toString()))
         );
