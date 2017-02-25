@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
     private MasterDataContext context = new MasterDataContext();
     private IFilter categoryFilter = null;
     private IFilter statusFilter = null;
-    private Collection<ITask> beans = null;
+    private String[] values = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context.init();
+        this.values = new TaskArrayStatusConverter().convert(context.tasks());
         listView = (ListView) findViewById(R.id.taskLst);
-
-        this.beans = context.tasks();
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
         listView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -122,10 +121,32 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         String name = item.getTitle().toString();
-        this.beans = context.tasks();
+
+        if(id==1005){
+            setTitle("EasyKin\\"+name);
+            Collection<IPayment> payments = context.finance();
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
+            listView.setAdapter(adapter);
+            return true;
+        }
+        if(id==1006){
+            setTitle("EasyKin\\"+name);
+            Collection<IPayment> payments = context.factPayments();
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
+            listView.setAdapter(adapter);
+            return true;
+        }
+
+        Collection<ITask> beans = context.tasks();
+        this.values = new TaskArrayStatusConverter().convert(beans);
         if(id==1000 || id==1009) {
             setTitle("EasyKin");
             categoryFilter = null;
@@ -134,6 +155,7 @@ public class MainActivity extends AppCompatActivity
             setTitle("EasyKin\\"+name);
             categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id-1000,name));
         }
+
         if(id==2000) {
             statusFilter = null;
         }
@@ -143,34 +165,18 @@ public class MainActivity extends AppCompatActivity
         if(id==2002) {
             statusFilter = TaskFilterFactory.status(Status.CLOSE);
         }
-/*        if(id==1005){
-            setTitle("EasyKin\\"+name);
-            Collection<IPayment> payments = context.finance();
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
-            listView.setAdapter(adapter);
-        }
-        if(id==1006){
-            setTitle("EasyKin\\"+name);
-            Collection<IPayment> payments = context.factPayments();
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
-            listView.setAdapter(adapter);
-        }
-*/
+
         if(statusFilter!=null){
             beans = FilterUtil.filter(beans, statusFilter);
         }
         if(categoryFilter!=null){
             beans = FilterUtil.filter(beans, categoryFilter);
         }
-
+        this.values = new TaskArrayStatusConverter().convert(beans);
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
         listView.setAdapter(adapter);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
