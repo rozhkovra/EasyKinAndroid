@@ -26,9 +26,6 @@ public class EasyKinService {
         runner.run();
         return processor.result();
     }
-    public Collection<IPerson> persons() {
-        return null;
-    }
     public Collection<ITask> tasks() {
         final IProcessor processor = new TaskProcessor(NAMESPACE, URL);
         ProcessRunner runner = new ProcessRunner(processor);

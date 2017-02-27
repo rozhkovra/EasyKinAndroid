@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Reload tasks....", Snackbar.LENGTH_LONG).show();
-
+                Snackbar.make(view, "Tasks was updated.", Snackbar.LENGTH_LONG).show();
+                setTitle("EasyKin");
                 context.init();
                 MainActivity.this.values = new TaskArrayStatusConverter().convert(context.tasks());
                 ArrayAdapter<String> adapter = new ArrayAdapter(MainActivity.this,
