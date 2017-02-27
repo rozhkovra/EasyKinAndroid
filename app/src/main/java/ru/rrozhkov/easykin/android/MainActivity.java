@@ -29,6 +29,7 @@ import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
 import ru.rrozhkov.lib.filter.IFilter;
 import ru.rrozhkov.lib.filter.util.FilterUtil;
+import ru.rrozhkov.lib.timer.Timer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,8 +58,13 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Reload tasks....", Snackbar.LENGTH_LONG).show();
+
+                context.init();
+                MainActivity.this.values = new TaskArrayStatusConverter().convert(context.tasks());
+                ArrayAdapter<String> adapter = new ArrayAdapter(MainActivity.this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.this.values);
+                MainActivity.this.listView.setAdapter(adapter);
             }
         });
 
