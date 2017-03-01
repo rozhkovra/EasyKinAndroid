@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "You can add new task!", Snackbar.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
                 startActivity(intent);
             }

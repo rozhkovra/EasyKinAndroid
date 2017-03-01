@@ -13,27 +13,50 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Collection;
+import java.util.Date;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
+import ru.rrozhkov.easykin.android.ws.client.task.EasyKinTaskService;
+import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
+import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.easykin.model.task.Priority;
 import ru.rrozhkov.easykin.model.task.Status;
+import ru.rrozhkov.easykin.model.task.impl.TaskFactory;
+import ru.rrozhkov.lib.collection.CollectionUtil;
 
 public class AddTaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private MasterDataContext context = new MasterDataContext();
+    private EditText editText;
+    private ICategory category = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        editText = (EditText) findViewById(R.id.taskText);
         context.init();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(category==null){
+                    Snackbar.make(view, "Choose category!!!",Snackbar.LENGTH_LONG).show();
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.openDrawer(GravityCompat.START);
+                    return;
+                }
+                EasyKinTaskService taskService = new EasyKinTaskService();
+                ITask task = TaskFactory.createTask(-1,editText.getText().toString()
+                        , new Date(), new Date(), Priority.IMPOTANT_FAST, category, null, Status.OPEN);
+                taskService.add(task);
+                Toast.makeText(AddTaskActivity.this.getBaseContext(),"Task added. Refresh task list!",Toast.LENGTH_LONG).show();
                 AddTaskActivity.super.onBackPressed();
             }
         });
@@ -49,7 +72,7 @@ public class AddTaskActivity extends AppCompatActivity
         navigationView.getMenu().clear();
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(0,1000+category.getId(),0,category.getName());
+            navigationView.getMenu().add(0,category.getId(),0,category.getName());
         }
     }
 
@@ -90,7 +113,10 @@ public class AddTaskActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        String name = item.getTitle().toString();
 
+        category = CategoryFactory.create(id, name);
+        setTitle("Add task for "+name);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

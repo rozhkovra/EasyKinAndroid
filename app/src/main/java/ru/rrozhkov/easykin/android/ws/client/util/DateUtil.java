@@ -18,4 +18,8 @@ public class DateUtil {
             return null;
         }
     }
+
+    public static String formatWs(Date date){
+        return SDFWS.format(date);
+    }
 }
