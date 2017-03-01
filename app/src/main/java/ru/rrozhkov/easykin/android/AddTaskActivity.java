@@ -55,8 +55,12 @@ public class AddTaskActivity extends AppCompatActivity
                 EasyKinTaskService taskService = new EasyKinTaskService();
                 ITask task = TaskFactory.createTask(-1,editText.getText().toString()
                         , new Date(), new Date(), Priority.IMPOTANT_FAST, category, null, Status.OPEN);
-                taskService.add(task);
-                Toast.makeText(AddTaskActivity.this.getBaseContext(),"Task added. Refresh task list!",Toast.LENGTH_LONG).show();
+                int id = taskService.add(task);
+                if(id!=-1) {
+                    Toast.makeText(AddTaskActivity.this.getBaseContext(), "Task added. Refresh task list!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(AddTaskActivity.this.getBaseContext(), "ERROR: Task not added!", Toast.LENGTH_LONG).show();
+                }
                 AddTaskActivity.super.onBackPressed();
             }
         });

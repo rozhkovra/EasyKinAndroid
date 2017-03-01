@@ -3,6 +3,7 @@ package ru.rrozhkov.easykin.android.ws.client.task;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.ProcessRunner;
 import ru.rrozhkov.easykin.android.ws.client.task.process.impl.AddTaskProcessor;
 import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.lib.collection.CollectionUtil;
 import ru.rrozhkov.lib.ws.process.IProcessor;
 
 /**
@@ -17,6 +18,6 @@ public class EasyKinTaskService {
         final IProcessor processor = new AddTaskProcessor(task, NAMESPACE, URL);
         ProcessRunner runner = new ProcessRunner(processor);
         runner.run();
-        return 0;
+        return (Integer)CollectionUtil.get(processor.result(),0);
     }
 }

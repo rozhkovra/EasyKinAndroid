@@ -2,14 +2,10 @@ package ru.rrozhkov.easykin.android.model.task.impl.convert;
 
 import org.ksoap2.serialization.SoapObject;
 
-import java.util.Date;
-
 import ru.rrozhkov.easykin.android.ws.client.util.DateUtil;
-import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Priority;
 import ru.rrozhkov.easykin.model.task.Status;
-import ru.rrozhkov.easykin.model.task.impl.TaskFactory;
 import ru.rrozhkov.lib.convert.IConverter;
 
 /**
