@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
+import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private ListView listView;
     private MasterDataContext context = new MasterDataContext();
     private IFilter categoryFilter = null;
-    private IFilter statusFilter = null;
+    public static IFilter statusFilter = null;
     private String[] values = null;
 
     @Override
@@ -71,16 +72,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-        final SubMenu subMenu = navigationView.getMenu().addSubMenu("Категории");
-        subMenu.add(0,1000,0,"Все");
+        navigationView.getMenu().add(0,0,0,"Все");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            subMenu.add(0,1000+category.getId(),0,category.getName());
-        }
-        final SubMenu subMenu2 = navigationView.getMenu().addSubMenu("Статус");
-        subMenu2.add(0,2000,0,"Все");
-        for(Status status : context.statuses()){
-            subMenu2.add(0,2000+Status.status(status),0,status.toString());
+            navigationView.getMenu().add(0,category.getId(),0,category.getName());
         }
     }
 
@@ -96,8 +91,11 @@ public class MainActivity extends AppCompatActivity
         }
         if(categoryFilter!=null){
             beans = FilterUtil.filter(beans, categoryFilter);
-        }
-        this.values = new TaskArrayStatusConverter().convert(beans);
+            this.values = new TaskArrayConverter().convert(beans);
+        }else
+            this.values = new TaskArrayStatusConverter().convert(beans);
+
+
         listView = (ListView) findViewById(R.id.taskLst);
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
@@ -135,7 +133,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.action_refresh) {
-            setTitle("EasyKin");
             refresh();
             Toast.makeText(this.getBaseContext(),"Tasks was reloaded!",Toast.LENGTH_SHORT).show();
             return true;
@@ -154,9 +151,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         String name = item.getTitle().toString();
 
-        if(id==1005){
+        if(id==5){
             categoryFilter = null;
-            statusFilter = null;
             setTitle("EasyKin\\"+name);
             Collection<IPayment> payments = context.finance();
             ArrayAdapter<String> adapter = new ArrayAdapter(this,
@@ -164,9 +160,8 @@ public class MainActivity extends AppCompatActivity
             listView.setAdapter(adapter);
             return true;
         }
-        if(id==1006){
+        if(id==6){
             categoryFilter = null;
-            statusFilter = null;
             setTitle("EasyKin\\"+name);
             Collection<IPayment> payments = context.factPayments();
             ArrayAdapter<String> adapter = new ArrayAdapter(this,
@@ -175,23 +170,13 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-        if(id==1000 || id==1009) {
+        if(id==0 || id==9) {
             setTitle("EasyKin");
             categoryFilter = null;
         }
-        if(id>1000 && id!=1009 && id!=1005 && id!=1006 && id<2000){
+        if(id>0 && id!=9 && id!=5 && id!=6 ){
             setTitle("EasyKin\\"+name);
-            categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id-1000,name));
-        }
-
-        if(id==2000) {
-            statusFilter = null;
-        }
-        if(id==2001) {
-            statusFilter = TaskFilterFactory.status(Status.OPEN);
-        }
-        if(id==2002) {
-            statusFilter = TaskFilterFactory.status(Status.CLOSE);
+            categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id,name));
         }
 
         updateList();

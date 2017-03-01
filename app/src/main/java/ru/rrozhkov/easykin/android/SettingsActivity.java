@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -21,6 +22,9 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import ru.rrozhkov.easykin.model.task.Status;
+import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -181,6 +185,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+
+            SwitchPreference preference = (SwitchPreference) findPreference("status_switch");
+            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if(((Boolean)newValue).booleanValue())
+                        MainActivity.statusFilter = TaskFilterFactory.status(Status.OPEN);
+                    else
+                        MainActivity.statusFilter = null;
+                    return true;
+                }
+            });
 
         }
     }
