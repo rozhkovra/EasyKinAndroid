@@ -25,13 +25,13 @@ public class AddTaskProcessor extends Processor {
     public AddTaskProcessor(ITask task, String namespace, String url) {
         super(namespace, url);
         this.task = task;
+        ids.clear();
+        ids.add(-1);
     }
 
     @Override
     public void process() {
         complete = false;
-        ids.clear();
-        ids.add(-1);
         SoapObject request = new SoapObject(namespace, METHOD_NAME);
         SoapObject arg0 = new TaskSoapConverter(namespace).convert(task);
         request.addProperty("arg0",arg0);
@@ -49,8 +49,6 @@ public class AddTaskProcessor extends Processor {
             ids.add(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ids.clear();
-            ids.add(-1);
         }
         complete = true;
     }
