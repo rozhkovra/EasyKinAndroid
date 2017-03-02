@@ -4,12 +4,14 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.ws.client.process.impl.CategoryProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.PaymentProcessor;
+import ru.rrozhkov.easykin.android.ws.client.process.impl.PingProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.ProcessRunner;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.TaskProcessor;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.lib.collection.CollectionUtil;
 import ru.rrozhkov.lib.ws.process.IProcessor;
 
 /**
@@ -37,5 +39,11 @@ public class EasyKinService {
         ProcessRunner runner = new ProcessRunner(processor);
         runner.run();
         return processor.result();
+    }
+    public int ping(){
+        final IProcessor processor = new PingProcessor(NAMESPACE, URL);
+        ProcessRunner runner = new ProcessRunner(processor);
+        runner.run();
+        return (Integer)CollectionUtil.get(processor.result(),0);
     }
 }

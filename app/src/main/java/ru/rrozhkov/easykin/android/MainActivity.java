@@ -24,6 +24,7 @@ import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
+import ru.rrozhkov.easykin.android.ws.client.EasyKinService;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity
     private MasterDataContext context = new MasterDataContext();
     private IFilter categoryFilter = null;
     public static IFilter statusFilter = null;
-    private String[] values = null;
+    private boolean isServiceAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,16 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("EasyKin");
+        isServiceAvailable = new EasyKinService().ping()==1;
+        if(!isServiceAvailable){
+            Toast.makeText(this.getBaseContext(), "Service not available!", Toast.LENGTH_SHORT).show();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.getMenu().clear();
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setVisibility(View.INVISIBLE);
+            return;
+        }
+
         refresh();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -80,25 +91,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refresh(){
+        if(!isServiceAvailable)
+            return;
         context.init();
         updateList();
+        Toast.makeText(this.getBaseContext(),"Tasks was reloaded!",Toast.LENGTH_SHORT).show();
     }
 
     private void updateList(){
         Collection<ITask> beans = context.tasks();
+        ArrayAdapter<String> adapter;
         if(statusFilter!=null){
             beans = FilterUtil.filter(beans, statusFilter);
         }
         if(categoryFilter!=null){
             beans = FilterUtil.filter(beans, categoryFilter);
-            this.values = new TaskArrayConverter().convert(beans);
+            adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
         }else
-            this.values = new TaskArrayStatusConverter().convert(beans);
-
+            adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
 
         listView = (ListView) findViewById(R.id.taskLst);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
         listView.setAdapter(adapter);
     }
 
@@ -134,7 +148,6 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.action_refresh) {
             refresh();
-            Toast.makeText(this.getBaseContext(),"Tasks was reloaded!",Toast.LENGTH_SHORT).show();
             return true;
         }
 
