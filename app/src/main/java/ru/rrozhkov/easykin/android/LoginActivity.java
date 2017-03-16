@@ -33,6 +33,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.rrozhkov.easykin.android.ws.client.auth.EasyKinAuthService;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -309,20 +311,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            EasyKinAuthService authService = new EasyKinAuthService();
+            if(authService.auth(mEmail,mPassword)==-1)
+                return true;
 
             // TODO: register the new account here.
             return true;

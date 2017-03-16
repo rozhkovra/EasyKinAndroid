@@ -12,7 +12,7 @@ import ru.rrozhkov.lib.ws.process.IProcessor;
 
 public class EasyKinTaskService {
     private static final String NAMESPACE = "http://rrozhkov.ru/easykin/task";
-    private static final String URL = "http://172.31.46.6:8082/EasyKinTaskService/?wsdl";
+    private static final String URL = "http://172.31.46.6:8081/EasyKinService/task?wsdl";
 
     public int add(ITask task){
         final IProcessor processor = new AddTaskProcessor(task, NAMESPACE, URL);
