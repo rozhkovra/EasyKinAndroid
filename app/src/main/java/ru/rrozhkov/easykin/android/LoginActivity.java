@@ -313,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             EasyKinAuthService authService = new EasyKinAuthService();
             if(authService.auth(mEmail,mPassword)==-1)
-                return true;
+                return false;
 
             // TODO: register the new account here.
             return true;

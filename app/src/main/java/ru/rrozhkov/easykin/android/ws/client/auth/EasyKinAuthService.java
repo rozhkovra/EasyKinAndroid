@@ -1,7 +1,6 @@
 package ru.rrozhkov.easykin.android.ws.client.auth;
 
 import ru.rrozhkov.easykin.android.ws.client.auth.process.impl.AuthProcessor;
-import ru.rrozhkov.easykin.android.ws.client.process.impl.ProcessRunner;
 import ru.rrozhkov.lib.collection.CollectionUtil;
 import ru.rrozhkov.lib.ws.process.IProcessor;
 
@@ -15,8 +14,7 @@ public class EasyKinAuthService{
 
     public int auth(String user, String pass){
         final IProcessor processor = new AuthProcessor(user, pass, NAMESPACE, URL);
-        ProcessRunner runner = new ProcessRunner(processor);
-        runner.run();
+        processor.process();
         return (Integer)CollectionUtil.get(processor.result(),0);
     }
 }
