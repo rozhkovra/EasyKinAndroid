@@ -3,6 +3,7 @@ package ru.rrozhkov.easykin.android;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import ru.rrozhkov.easykin.android.context.SettingsContext;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
 
@@ -30,7 +32,7 @@ import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-
+    public static final String PREFS_NAME = "easykinSettings";
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -39,6 +41,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("showClosedTask", SettingsContext.instance().isShowClosedTask());
+        editor.commit();
     }
 
     /**
@@ -52,9 +64,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
      @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-    }
+         super.onCreate(savedInstanceState);
+         setupActionBar();
+     }
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -107,13 +119,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             SwitchPreference preference = (SwitchPreference) findPreference("status_switch");
+            preference.setChecked(SettingsContext.instance().isShowClosedTask());
             preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if(((Boolean)newValue).booleanValue())
-                        MainActivity.statusFilter = TaskFilterFactory.status(Status.OPEN);
+                        SettingsContext.instance().setShowClosedTask(true);
                     else
-                        MainActivity.statusFilter = null;
+                        SettingsContext.instance().setShowClosedTask(false);
                     return true;
                 }
             });

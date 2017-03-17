@@ -1,6 +1,7 @@
 package ru.rrozhkov.easykin.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
+import ru.rrozhkov.easykin.android.context.SettingsContext;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
@@ -38,11 +40,10 @@ import ru.rrozhkov.lib.timer.Timer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    public static final String PREFS_NAME = "easykinSettings";
     private ListView listView;
     private MasterDataContext context = new MasterDataContext();
     private IFilter categoryFilter = null;
-    public static IFilter statusFilter = null;
     private boolean isServiceAvailable = false;
 
     @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
+        initSettingsContext();
         refresh();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -90,6 +92,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("showClosedTask", SettingsContext.instance().isShowClosedTask());
+        // Commit the edits!
+        editor.commit();
+    }
+
     private void refresh(){
         if(!isServiceAvailable)
             return;
@@ -100,10 +115,10 @@ public class MainActivity extends AppCompatActivity
 
     private void updateList(){
         Collection<ITask> beans = context.tasks();
-        ArrayAdapter<String> adapter;
-        if(statusFilter!=null){
-            beans = FilterUtil.filter(beans, statusFilter);
+        if(!SettingsContext.instance().isShowClosedTask()){
+            beans = FilterUtil.filter(beans, TaskFilterFactory.status(Status.OPEN));
         }
+        ArrayAdapter<String> adapter;
         if(categoryFilter!=null){
             beans = FilterUtil.filter(beans, categoryFilter);
             adapter = new ArrayAdapter(this,
@@ -195,5 +210,11 @@ public class MainActivity extends AppCompatActivity
         updateList();
 
         return true;
+    }
+
+    private void initSettingsContext(){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean showClosedTask = settings.getBoolean("showClosedTask", false);
+        SettingsContext.instance().setShowClosedTask(showClosedTask);
     }
 }
