@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -27,18 +25,14 @@ import ru.rrozhkov.easykin.android.db.SQLiteDBHelper;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
-import ru.rrozhkov.easykin.android.ws.client.EasyKinService;
-import ru.rrozhkov.easykin.android.ws.client.util.ServiceUtil;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
-import ru.rrozhkov.lib.collection.CollectionUtil;
 import ru.rrozhkov.lib.filter.IFilter;
 import ru.rrozhkov.lib.filter.util.FilterUtil;
-import ru.rrozhkov.lib.timer.Timer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private ListView listView;
     private MasterDataContext context = new MasterDataContext();
     private IFilter categoryFilter = null;
+    private SQLiteDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("EasyKin");
+        dbHelper = new SQLiteDBHelper(this);
 
         initSettingsContext();
         refresh();
