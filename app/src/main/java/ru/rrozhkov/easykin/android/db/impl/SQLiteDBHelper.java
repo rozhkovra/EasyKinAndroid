@@ -1,4 +1,4 @@
-package ru.rrozhkov.easykin.android.db;
+package ru.rrozhkov.easykin.android.db.impl;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

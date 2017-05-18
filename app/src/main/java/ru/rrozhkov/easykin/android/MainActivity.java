@@ -21,7 +21,8 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
-import ru.rrozhkov.easykin.android.db.SQLiteDBHelper;
+import ru.rrozhkov.easykin.android.context.impl.SOAPMasterDataContext;
+import ru.rrozhkov.easykin.android.db.impl.SQLiteDBHelper;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String PREFS_NAME = "easykinSettings";
     private ListView listView;
-    private MasterDataContext context = new MasterDataContext();
+    private MasterDataContext context = new SOAPMasterDataContext();
     private IFilter categoryFilter = null;
     private SQLiteDBHelper dbHelper;
 

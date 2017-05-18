@@ -2,6 +2,7 @@ package ru.rrozhkov.easykin.android.ws.client;
 
 import java.util.Collection;
 
+import ru.rrozhkov.easykin.android.service.EasyKinService;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.CategoryProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.PaymentProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.PingProcessor;
@@ -17,7 +18,7 @@ import ru.rrozhkov.lib.ws.process.IProcessor;
  * Created by rrozhkov on 2/17/2017.
  */
 
-public class EasyKinService {
+public class SOAPEasyKinService implements EasyKinService {
     private static final String NAMESPACE = "http://rrozhkov.ru/easykin";
     private static final String URL = "http://172.31.46.6:8081/EasyKinService/?wsdl";
 
