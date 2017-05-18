@@ -23,10 +23,12 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
+import ru.rrozhkov.easykin.android.db.SQLiteDBHelper;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
 import ru.rrozhkov.easykin.android.ws.client.EasyKinService;
+import ru.rrozhkov.easykin.android.ws.client.util.ServiceUtil;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity
     private ListView listView;
     private MasterDataContext context = new MasterDataContext();
     private IFilter categoryFilter = null;
-    private boolean isServiceAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +55,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("EasyKin");
-        isServiceAvailable = new EasyKinService().ping()==1;
-        if(!isServiceAvailable){
-            Toast.makeText(this.getBaseContext(), "Service not available!", Toast.LENGTH_SHORT).show();
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.getMenu().clear();
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setVisibility(View.INVISIBLE);
-            return;
-        }
 
         initSettingsContext();
         refresh();
@@ -106,8 +98,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refresh(){
-        if(!isServiceAvailable)
-            return;
         context.init();
         updateList();
         Toast.makeText(this.getBaseContext(),"Tasks was reloaded!",Toast.LENGTH_SHORT).show();

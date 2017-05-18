@@ -41,8 +41,7 @@ public class EasyKinService {
     }
     public int ping(){
         final IProcessor processor = new PingProcessor(NAMESPACE, URL);
-        ProcessRunner runner = new ProcessRunner(processor);
-        runner.run();
+        processor.process();
         return (Integer)CollectionUtil.get(processor.result(),0);
     }
 }

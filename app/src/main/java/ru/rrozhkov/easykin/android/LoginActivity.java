@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.rrozhkov.easykin.android.ws.client.auth.EasyKinAuthService;
+import ru.rrozhkov.easykin.android.ws.client.util.ServiceUtil;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -47,13 +48,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -174,11 +168,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } /*else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }*/
+        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -193,15 +183,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -290,7 +271,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -301,6 +281,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private String authResult;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -309,13 +290,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            if(!ServiceUtil.isServiceAvailable()){
+                authResult = getString(R.string.error_service_not_available);
+                return false;
+            }
 
             EasyKinAuthService authService = new EasyKinAuthService();
-            if(authService.auth(mEmail,mPassword)==-1)
+            if(authService.auth(mEmail,mPassword)==-1) {
+                authResult = getString(R.string.error_incorrect_password);
                 return false;
-
-            // TODO: register the new account here.
+            }
             return true;
         }
 
@@ -329,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(authResult);
                 mPasswordView.requestFocus();
             }
         }
