@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by rrozhkov on 5/17/2017.
  */
 
-public class SQLiteDBHelper extends SQLiteOpenHelper {
-    public SQLiteDBHelper(Context context) {
+public class EasyKinDBHelper extends SQLiteOpenHelper {
+    public EasyKinDBHelper(Context context) {
         super(context, "EasyKin", null, 1);
     }
 

@@ -22,7 +22,7 @@ import java.util.Collection;
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
 import ru.rrozhkov.easykin.android.context.impl.SOAPMasterDataContext;
-import ru.rrozhkov.easykin.android.db.impl.SQLiteDBHelper;
+import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private ListView listView;
     private MasterDataContext context = new SOAPMasterDataContext();
     private IFilter categoryFilter = null;
-    private SQLiteDBHelper dbHelper;
+    private EasyKinDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("EasyKin");
-        dbHelper = new SQLiteDBHelper(this);
+        dbHelper = new EasyKinDBHelper(this);
 
         initSettingsContext();
         refresh();
