@@ -17,7 +17,7 @@ public class EasyKinDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table category ("
         + "id integer primary key,"
-        + "name text)';");
+        + "name text)");
     }
 
     @Override

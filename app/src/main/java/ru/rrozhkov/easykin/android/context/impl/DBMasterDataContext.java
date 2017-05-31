@@ -17,4 +17,9 @@ public class DBMasterDataContext extends MasterDataContext {
         this.tasks = service.tasks();
         this.payments = service.payments();
     }
+
+    @Override
+    public void replicate() {
+
+    }
 }

@@ -22,6 +22,8 @@ public abstract class MasterDataContext {
 
     abstract public void init();
 
+    abstract public void replicate();
+
     public Collection<ICategory> categories() {
         return categories;
     }

@@ -24,20 +24,17 @@ public class SOAPEasyKinService implements EasyKinService {
 
     public Collection<ICategory> categories() {
         final IProcessor processor = new CategoryProcessor(NAMESPACE, URL);
-        ProcessRunner runner = new ProcessRunner(processor);
-        runner.run();
+        processor.process();
         return processor.result();
     }
     public Collection<ITask> tasks() {
         final IProcessor processor = new TaskProcessor(NAMESPACE, URL);
-        ProcessRunner runner = new ProcessRunner(processor);
-        runner.run();
+        processor.process();
         return processor.result();
     }
     public Collection<IPayment> payments() {
         final IProcessor processor = new PaymentProcessor(NAMESPACE, URL);
-        ProcessRunner runner = new ProcessRunner(processor);
-        runner.run();
+        processor.process();
         return processor.result();
     }
     public int ping(){

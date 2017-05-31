@@ -1,5 +1,6 @@
 package ru.rrozhkov.easykin.android.db.impl;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.service.EasyKinService;
@@ -14,6 +15,11 @@ import ru.rrozhkov.lib.collection.CollectionUtil;
 
 public class DBEasyKinService implements EasyKinService {
     public Collection<ICategory> categories() {
+        try {
+            return CategoryHandler.select();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return CollectionUtil.create();
     }
     public Collection<ITask> tasks() {

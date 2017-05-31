@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
+import ru.rrozhkov.easykin.android.context.impl.SOAPMasterDataContext;
 import ru.rrozhkov.easykin.android.ws.client.task.EasyKinTaskService;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
@@ -31,7 +32,7 @@ import ru.rrozhkov.lib.collection.CollectionUtil;
 
 public class AddTaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private MasterDataContext context = new MasterDataContext();
+    private MasterDataContext context = new SOAPMasterDataContext();
     private EditText editText;
     private ICategory category = null;
     @Override

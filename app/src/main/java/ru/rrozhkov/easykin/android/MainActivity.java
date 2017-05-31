@@ -2,8 +2,8 @@ package ru.rrozhkov.easykin.android;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,8 +20,10 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
-import ru.rrozhkov.easykin.android.context.impl.SOAPMasterDataContext;
+import ru.rrozhkov.easykin.android.context.impl.DBMasterDataContext;
+import ru.rrozhkov.easykin.android.context.impl.MasterDataContextFactory;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
+import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
@@ -39,22 +40,26 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String PREFS_NAME = "easykinSettings";
     private ListView listView;
-    private MasterDataContext context = new SOAPMasterDataContext();
+    private MasterDataContext context;
     private IFilter categoryFilter = null;
     private EasyKinDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbHelper = new EasyKinDBHelper(this);
+        EasyKinDBManager.init(dbHelper);
+
+        new ManageDataTask().execute((Void) null);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setTitle("EasyKin");
-        dbHelper = new EasyKinDBHelper(this);
+
 
         initSettingsContext();
-        refresh();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +75,9 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+    }
 
+    private void refreshNavView() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
@@ -95,12 +102,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refresh(){
-        context.init();
-        updateList();
+        rereshTaskLst();
+        refreshNavView();
         Toast.makeText(this.getBaseContext(),"Tasks was reloaded!",Toast.LENGTH_SHORT).show();
     }
 
-    private void updateList(){
+    private void rereshTaskLst(){
         Collection<ITask> beans = context.tasks();
         if(!SettingsContext.instance().isShowClosedTask()){
             beans = FilterUtil.filter(beans, TaskFilterFactory.status(Status.OPEN));
@@ -194,7 +201,7 @@ public class MainActivity extends AppCompatActivity
             categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id,name));
         }
 
-        updateList();
+        rereshTaskLst();
 
         return true;
     }
@@ -203,5 +210,19 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         boolean showClosedTask = settings.getBoolean("showClosedTask", false);
         SettingsContext.instance().setShowClosedTask(showClosedTask);
+    }
+
+    public class ManageDataTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            MainActivity.this.context = MasterDataContextFactory.instance();
+            MainActivity.this.context.init();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            MainActivity.this.refresh();
+        }
     }
 }
