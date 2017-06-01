@@ -18,6 +18,14 @@ public class EasyKinDBHelper extends SQLiteOpenHelper {
         db.execSQL("create table category ("
         + "id integer primary key,"
         + "name text)");
+        db.execSQL("create table person ( "
+                + "id integer primary key, "
+                + "surname text, "
+                + "name text, "
+                + "secondname text, "
+                + "sex text, "
+                + "username text, "
+                + "password text)");
     }
 
     @Override

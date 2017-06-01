@@ -9,7 +9,7 @@ import ru.rrozhkov.lib.convert.IConverter;
  * Created by rrozhkov on 5/30/2017.
  */
 
-public class CategoryContetntConverter implements IConverter<ICategory, ContentValues> {
+public class CategoryContentConverter implements IConverter<ICategory, ContentValues> {
     @Override
     public ContentValues convert(ICategory category) {
         ContentValues map = new ContentValues();
