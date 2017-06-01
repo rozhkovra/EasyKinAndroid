@@ -282,6 +282,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         private String authResult;
+        private boolean online = false;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -300,6 +301,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 authResult = getString(R.string.error_incorrect_password);
                 return false;
             }
+            online = true;
             return true;
         }
 
@@ -311,6 +313,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("online",online);
                 startActivity(intent);
             } else {
                 mPasswordView.setError(authResult);

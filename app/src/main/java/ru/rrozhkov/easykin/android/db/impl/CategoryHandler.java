@@ -18,12 +18,6 @@ public class CategoryHandler {
 
     public static String select = "SELECT * FROM "+TABLENAME+" ORDER BY ID";
 
-    public static String insert = "INSERT INTO "+TABLENAME
-            +" (ID, NAME) "
-            +" VALUES(#id#,'#name#')";
-
-    public static String update = "UPDATE "+TABLENAME+" SET NAME='#name#' WHERE ID=#id#";
-
     public static Collection<ICategory> select() throws SQLException {
         return EasyKinDBManager.instance().select(select, new DBCategoryConverter());
     }
@@ -33,8 +27,7 @@ public class CategoryHandler {
             ContentValues map = new CategoryContetntConverter().convert(category);
             int id = EasyKinDBManager.instance().nextId(TABLENAME);
             map.put("id", id);
-            EasyKinDBManager.instance().insert(TABLENAME, map);
-            return id;
+            return EasyKinDBManager.instance().insert(TABLENAME, map);
         } catch (Exception e) {
             throw new SQLException(e);
         }
@@ -43,8 +36,7 @@ public class CategoryHandler {
     public static int update(ICategory category) throws SQLException{
         try {
             ContentValues map = new CategoryContetntConverter().convert(category);
-            EasyKinDBManager.instance().update(update, map);
-            return 1;
+            return EasyKinDBManager.instance().update(TABLENAME, map);
         } catch (Exception e) {
             throw new SQLException(e);
         }

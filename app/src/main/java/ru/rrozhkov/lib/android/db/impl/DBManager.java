@@ -19,7 +19,6 @@ import ru.rrozhkov.lib.db.IDBManager;
 public class DBManager implements IDBManager<Cursor, ContentValues> {
     protected EasyKinDBHelper dbHelper;
     private static String nextId = "SELECT MAX(ID)+1 AS ID FROM #table#";
-    private static String deleteAll = "DELETE FROM #table#";
 
     public DBManager(EasyKinDBHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -64,16 +63,16 @@ public class DBManager implements IDBManager<Cursor, ContentValues> {
     @Override
     public int update(String tableName, ContentValues map) throws SQLException {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.update(tableName, map, null, null);
+        int updatedCount = db.update(tableName, map, null, null);
         dbHelper.close();
-        return 1;
+        return updatedCount;
     }
 
     @Override
     public int deleteAll(String tableName) throws SQLException {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(tableName,null,null);
+        int delCount = db.delete(tableName,null,null);
         dbHelper.close();
-        return 1;
+        return delCount;
     }
 }

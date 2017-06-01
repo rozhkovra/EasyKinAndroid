@@ -20,7 +20,6 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
-import ru.rrozhkov.easykin.android.context.impl.DBMasterDataContext;
 import ru.rrozhkov.easykin.android.context.impl.MasterDataContextFactory;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
@@ -43,10 +42,12 @@ public class MainActivity extends AppCompatActivity
     private MasterDataContext context;
     private IFilter categoryFilter = null;
     private EasyKinDBHelper dbHelper;
+    private boolean online = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        online = getIntent().getBooleanExtra("online", false);
         dbHelper = new EasyKinDBHelper(this);
         EasyKinDBManager.init(dbHelper);
 
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity
     public class ManageDataTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
-            MainActivity.this.context = MasterDataContextFactory.instance();
+            MainActivity.this.context = MasterDataContextFactory.instance(online);
             MainActivity.this.context.init();
             return true;
         }
