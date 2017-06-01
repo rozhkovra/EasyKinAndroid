@@ -12,6 +12,7 @@ import ru.rrozhkov.lib.ws.process.impl.Processor;
  */
 
 public abstract class NoArgsProcessor extends Processor {
+    public static int SOAP_REQUEST_TIMEOUT = 10000;
     public NoArgsProcessor(String namespace, String url) {
         super(namespace, url);
     }
@@ -23,7 +24,7 @@ public abstract class NoArgsProcessor extends Processor {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(url, SOAP_REQUEST_TIMEOUT);
 
         try {
             androidHttpTransport.call(soapAction(), envelope);
