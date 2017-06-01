@@ -291,9 +291,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            if(!ServiceUtil.isServiceAvailable()){
+            online = ServiceUtil.isServiceAvailable();
+            if(!online){
                 authResult = getString(R.string.error_service_not_available);
-                return false;
+                //TODO db auth
+                return true;
             }
 
             EasyKinAuthService authService = new EasyKinAuthService();
@@ -301,7 +303,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 authResult = getString(R.string.error_incorrect_password);
                 return false;
             }
-            online = true;
             return true;
         }
 
