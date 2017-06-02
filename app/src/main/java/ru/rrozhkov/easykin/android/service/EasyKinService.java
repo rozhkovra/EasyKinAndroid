@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
+import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 
 /**
@@ -14,4 +15,5 @@ public interface EasyKinService {
     Collection<ICategory> categories();
     Collection<ITask> tasks();
     Collection<IPayment> payments();
+    Collection<IPerson> persons();
 }

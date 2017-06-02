@@ -5,11 +5,12 @@ import java.util.Collection;
 import ru.rrozhkov.easykin.android.service.EasyKinService;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.CategoryProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.PaymentProcessor;
+import ru.rrozhkov.easykin.android.ws.client.process.impl.PersonProcessor;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.PingProcessor;
-import ru.rrozhkov.easykin.android.ws.client.process.impl.ProcessRunner;
 import ru.rrozhkov.easykin.android.ws.client.process.impl.TaskProcessor;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
+import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.lib.collection.CollectionUtil;
 import ru.rrozhkov.lib.ws.process.IProcessor;
@@ -34,6 +35,11 @@ public class SOAPEasyKinService implements EasyKinService {
     }
     public Collection<IPayment> payments() {
         final IProcessor processor = new PaymentProcessor(NAMESPACE, URL);
+        processor.process();
+        return processor.result();
+    }
+    public Collection<IPerson> persons() {
+        final IProcessor processor = new PersonProcessor(NAMESPACE, URL);
         processor.process();
         return processor.result();
     }

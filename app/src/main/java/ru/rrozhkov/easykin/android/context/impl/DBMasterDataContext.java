@@ -16,6 +16,7 @@ public class DBMasterDataContext extends MasterDataContext {
         this.categories = service.categories();
         this.tasks = service.tasks();
         this.payments = service.payments();
+        this.persons = service.persons();
     }
 
     @Override

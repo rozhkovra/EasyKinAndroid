@@ -6,6 +6,7 @@ import java.util.Collection;
 import ru.rrozhkov.easykin.android.service.EasyKinService;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
+import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.lib.collection.CollectionUtil;
 
@@ -26,6 +27,10 @@ public class DBEasyKinService implements EasyKinService {
         return CollectionUtil.create();
     }
     public Collection<IPayment> payments() {
+        return CollectionUtil.create();
+    }
+    @Override
+    public Collection<IPerson> persons() {
         return CollectionUtil.create();
     }
 }

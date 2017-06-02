@@ -6,6 +6,7 @@ import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.fin.payment.PaymentStatus;
 import ru.rrozhkov.easykin.model.fin.payment.impl.filter.PaymentFilterFactory;
+import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.lib.collection.CollectionUtil;
@@ -19,6 +20,7 @@ public abstract class MasterDataContext {
     protected Collection<ICategory> categories = CollectionUtil.create();
     protected Collection<ITask> tasks = CollectionUtil.create();
     protected Collection<IPayment> payments = CollectionUtil.create();
+    protected Collection<IPerson> persons = CollectionUtil.create();
 
     abstract public void init();
 
@@ -34,6 +36,10 @@ public abstract class MasterDataContext {
 
     public Collection<IPayment> payments() {
         return payments;
+    }
+
+    public Collection<IPerson> persons(){
+        return persons;
     }
 
     public Collection<IPayment> finance() {
