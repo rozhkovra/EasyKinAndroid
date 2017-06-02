@@ -19,9 +19,9 @@ public class CategoryReplicator {
 
     public void execute(){
         try {
-            CategoryHandler.deleteAll();
+            new CategoryHandler().deleteAll();
             for(ICategory category : soapMasterDataContext.categories()){
-                CategoryHandler.insert(category);
+                new CategoryHandler().insert(category);
             }
         } catch (SQLException e) {
             e.printStackTrace();

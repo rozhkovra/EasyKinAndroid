@@ -16,7 +16,7 @@ import ru.rrozhkov.lib.collection.CollectionUtil;
 public class DBEasyKinService implements EasyKinService {
     public Collection<ICategory> categories() {
         try {
-            return CategoryHandler.select();
+            return new CategoryHandler().select();
         } catch (SQLException e) {
             e.printStackTrace();
         }
