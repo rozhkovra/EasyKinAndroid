@@ -33,7 +33,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.rrozhkov.easykin.android.ws.client.auth.EasyKinAuthService;
+import ru.rrozhkov.easykin.android.db.impl.DBEasyKinAuthService;
+import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
+import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
+import ru.rrozhkov.easykin.android.service.EasyKinAuthService;
+import ru.rrozhkov.easykin.android.ws.client.auth.SOAPEasyKinAuthService;
 import ru.rrozhkov.easykin.android.ws.client.util.ServiceUtil;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -58,11 +62,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private EasyKinDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        dbHelper = new EasyKinDBHelper(this);
+        EasyKinDBManager.init(dbHelper);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -292,13 +299,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             online = ServiceUtil.isServiceAvailable();
+            EasyKinAuthService authService;
             if(!online){
-                authResult = getString(R.string.error_service_not_available);
-                //TODO db auth
-                return true;
+                authService = new DBEasyKinAuthService();
+            }else{
+                authService = new SOAPEasyKinAuthService();
             }
 
-            EasyKinAuthService authService = new EasyKinAuthService();
             if(authService.auth(mEmail,mPassword)==-1) {
                 authResult = getString(R.string.error_incorrect_password);
                 return false;
