@@ -15,6 +15,7 @@ public class PersonContentConverter implements IConverter<IPerson, ContentValues
         ContentValues map = new ContentValues();
         map.put("id", person.getId());
         map.put("surname", person.getSurname());
+        map.put("name", person.getName());
         map.put("secondname", person.getSecondName());
         map.put("sex", person.getSex().toString());
         map.put("username", person.getUsername());

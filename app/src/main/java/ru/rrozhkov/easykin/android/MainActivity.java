@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(final Boolean success) {
             MainActivity.this.refresh();
+            MainActivity.this.context.replicate();
         }
     }
 }
