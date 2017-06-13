@@ -24,6 +24,11 @@ public class DBEasyKinService implements EasyKinService {
         return CollectionUtil.create();
     }
     public Collection<ITask> tasks() {
+        try {
+            return new TaskHandler().select();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return CollectionUtil.create();
     }
     public Collection<IPayment> payments() {
@@ -31,6 +36,11 @@ public class DBEasyKinService implements EasyKinService {
     }
     @Override
     public Collection<IPerson> persons() {
+        try {
+            return new PersonHandler().select();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return CollectionUtil.create();
     }
 }

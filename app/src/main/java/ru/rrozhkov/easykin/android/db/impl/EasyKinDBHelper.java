@@ -16,8 +16,8 @@ public class EasyKinDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table category ("
-        + "id integer primary key,"
-        + "name text)");
+                + "id integer primary key,"
+                + "name text)");
         db.execSQL("create table person ( "
                 + "id integer primary key, "
                 + "surname text, "
@@ -26,6 +26,12 @@ public class EasyKinDBHelper extends SQLiteOpenHelper {
                 + "sex text, "
                 + "username text, "
                 + "password text)");
+        db.execSQL("create table task ( "
+                + "id integer primary key, "
+                + "name text, "
+                + "priority integer, "
+                + "category integer, "
+                + "status integer)");
     }
 
     @Override

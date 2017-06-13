@@ -3,6 +3,7 @@ package ru.rrozhkov.easykin.android.context.impl;
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.replication.impl.CategoryReplicator;
 import ru.rrozhkov.easykin.android.replication.impl.PersonReplicator;
+import ru.rrozhkov.easykin.android.replication.impl.TaskReplicator;
 import ru.rrozhkov.easykin.android.service.EasyKinService;
 import ru.rrozhkov.easykin.android.ws.client.SOAPEasyKinService;
 
@@ -23,9 +24,11 @@ public class SOAPMasterDataContext extends MasterDataContext {
 
     @Override
     public void replicate() {
-        CategoryReplicator replicator = new CategoryReplicator(this);
-        replicator.execute();
         PersonReplicator pReplicator = new PersonReplicator(this);
         pReplicator.execute();
+        CategoryReplicator replicator = new CategoryReplicator(this);
+        replicator.execute();
+        TaskReplicator tReplicator = new TaskReplicator(this);
+        tReplicator.execute();
     }
 }

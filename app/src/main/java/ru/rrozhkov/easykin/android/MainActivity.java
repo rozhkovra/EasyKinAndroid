@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-        navigationView.getMenu().add(0,0,0,"Все");
+        navigationView.getMenu().add(0,0,0,"Все(0)");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(0,category.getId(),0,category.getName());
+            navigationView.getMenu().add(0,category.getId(),0,category.getName()+"("+category.getId()+")");
         }
     }
 
