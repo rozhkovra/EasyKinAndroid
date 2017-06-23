@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +30,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.rrozhkov.easykin.android.db.impl.DBEasyKinAuthService;
+import ru.rrozhkov.easykin.android.db.impl.DumpManager;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
 import ru.rrozhkov.easykin.android.service.EasyKinAuthService;
@@ -94,8 +97,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        Button mRestoreDumpButton = (Button) findViewById(R.id.restore_dump_button);
+        mRestoreDumpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptRestoreDump();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        Toast.makeText(this, Environment.getExternalStorageDirectory().getAbsolutePath(), Toast.LENGTH_LONG).show();
+    }
+
+    private void attemptRestoreDump() {
+        DumpManager.restoreDump(dbHelper);
     }
 
     private void populateAutoComplete() {

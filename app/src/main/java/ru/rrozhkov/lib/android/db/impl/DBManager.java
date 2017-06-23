@@ -39,7 +39,7 @@ public class DBManager implements IDBManager<Cursor, ContentValues> {
 
     @Override
     public <T> Collection<T> select(String sql, IConverter<Cursor, T> iConverter) throws SQLException {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Collection<T> collection = CollectionUtil.create();
         Cursor c = db.rawQuery(sql, new String[]{});
         if (c.moveToFirst()) {

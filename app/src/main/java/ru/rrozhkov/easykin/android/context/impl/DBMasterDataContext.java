@@ -23,4 +23,9 @@ public class DBMasterDataContext extends MasterDataContext {
     public void replicate() {
 
     }
+
+    @Override
+    public void dump() {
+
+    }
 }

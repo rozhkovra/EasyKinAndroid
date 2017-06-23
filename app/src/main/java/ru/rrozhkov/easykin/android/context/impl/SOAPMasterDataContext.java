@@ -1,6 +1,7 @@
 package ru.rrozhkov.easykin.android.context.impl;
 
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
+import ru.rrozhkov.easykin.android.db.impl.DumpManager;
 import ru.rrozhkov.easykin.android.replication.impl.CategoryReplicator;
 import ru.rrozhkov.easykin.android.replication.impl.PersonReplicator;
 import ru.rrozhkov.easykin.android.replication.impl.TaskReplicator;
@@ -30,5 +31,10 @@ public class SOAPMasterDataContext extends MasterDataContext {
         replicator.execute();
         TaskReplicator tReplicator = new TaskReplicator(this);
         tReplicator.execute();
+    }
+
+    @Override
+    public void dump() {
+//        DumpManager.dump(this);
     }
 }

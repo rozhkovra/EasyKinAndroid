@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,7 +38,6 @@ import ru.rrozhkov.lib.filter.util.FilterUtil;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static final String PREFS_NAME = "easykinSettings";
     private ListView listView;
     private MasterDataContext context;
     private IFilter categoryFilter = null;
@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            Toast.makeText(this, "External SD card not mounted", Toast.LENGTH_LONG).show();
+        }
+        Toast.makeText(this, Environment.getExternalStorageDirectory().getAbsolutePath(), Toast.LENGTH_LONG).show();
     }
 
     private void refreshNavView() {
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(FilesSettings.EASYKIN_SETTINGS, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("showClosedTask", SettingsContext.instance().isShowClosedTask());
         // Commit the edits!
@@ -208,7 +213,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initSettingsContext(){
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(FilesSettings.EASYKIN_SETTINGS, 0);
         boolean showClosedTask = settings.getBoolean("showClosedTask", false);
         SettingsContext.instance().setShowClosedTask(showClosedTask);
     }
@@ -225,6 +230,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(final Boolean success) {
             MainActivity.this.refresh();
             MainActivity.this.context.replicate();
+//            MainActivity.this.context.dump();
         }
     }
 }

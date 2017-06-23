@@ -25,7 +25,7 @@ public class AndroidEncrypter {
             e.printStackTrace();
         }
         byte raw[] = md.digest();
-        String hash = new String(Base64.encode(raw, Base64.DEFAULT)); //step 5
+        String hash = new String(Base64.encode(raw, Base64.DEFAULT)).replace("\n",""); //step 5
         return hash;
     }
 
