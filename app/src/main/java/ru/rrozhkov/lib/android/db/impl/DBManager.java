@@ -26,7 +26,7 @@ public class DBManager implements IDBManager<Cursor, ContentValues> {
 
     @Override
     public int nextId(String tableName) throws SQLException {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(nextId.replace("#table#", tableName), new String[]{});
         int id = 1;
         if (c.moveToFirst()) {
@@ -34,7 +34,7 @@ public class DBManager implements IDBManager<Cursor, ContentValues> {
         }
         c.close();
         dbHelper.close();
-        return id;
+        return id==0?1:id;
     }
 
     @Override
