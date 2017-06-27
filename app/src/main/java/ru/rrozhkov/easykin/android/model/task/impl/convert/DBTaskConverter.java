@@ -21,7 +21,7 @@ public class DBTaskConverter implements IConverter<Cursor, ITask> {
                 , new Date()
                 , cursor.getInt(cursor.getColumnIndex("priority"))
                 , cursor.getInt(cursor.getColumnIndex("category"))
-                , ""
+                , cursor.getString(cursor.getColumnIndex("categoryName"))
                 , new Date()
                 , cursor.getInt(cursor.getColumnIndex("status")));
     }
