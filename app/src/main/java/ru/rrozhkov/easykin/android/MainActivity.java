@@ -31,10 +31,14 @@ import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.task.ITask;
+import ru.rrozhkov.easykin.model.task.Priority;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
 import ru.rrozhkov.lib.filter.IFilter;
 import ru.rrozhkov.lib.filter.util.FilterUtil;
+
+import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_CLOSED_TASK;
+import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_ONLY_IMPORTANT_TASK;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -117,6 +121,9 @@ public class MainActivity extends AppCompatActivity
         Collection<ITask> beans = context.tasks();
         if(!SettingsContext.instance().isShowClosedTask()){
             beans = FilterUtil.filter(beans, TaskFilterFactory.status(Status.OPEN));
+        }
+        if(SettingsContext.instance().isShowOnlyImportantTask()){
+            beans = FilterUtil.filter(beans, TaskFilterFactory.priority(Priority.IMPOTANT_FAST));
         }
         ArrayAdapter<String> adapter;
         if(categoryFilter!=null){
@@ -214,8 +221,10 @@ public class MainActivity extends AppCompatActivity
 
     private void initSettingsContext(){
         SharedPreferences settings = getSharedPreferences(FilesSettings.EASYKIN_SETTINGS, 0);
-        boolean showClosedTask = settings.getBoolean("showClosedTask", false);
+        boolean showClosedTask = settings.getBoolean(SHOW_CLOSED_TASK, false);
         SettingsContext.instance().setShowClosedTask(showClosedTask);
+        boolean showOnlyImportantTask = settings.getBoolean(SHOW_ONLY_IMPORTANT_TASK, false);
+        SettingsContext.instance().setShowOnlyImportantTask(showOnlyImportantTask);
     }
 
     public class ManageDataTask extends AsyncTask<Void, Void, Boolean> {

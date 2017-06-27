@@ -17,8 +17,10 @@ import android.view.MenuItem;
 import java.util.List;
 
 import ru.rrozhkov.easykin.android.context.SettingsContext;
-import ru.rrozhkov.easykin.model.task.Status;
-import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
+
+import static ru.rrozhkov.easykin.android.FilesSettings.EASYKIN_SETTINGS;
+import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_CLOSED_TASK;
+import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_ONLY_IMPORTANT_TASK;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -32,7 +34,7 @@ import ru.rrozhkov.easykin.model.task.impl.filter.TaskFilterFactory;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-    public static final String PREFS_NAME = "easykinSettings";
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -47,9 +49,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onStop(){
         super.onStop();
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(EASYKIN_SETTINGS, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("showClosedTask", SettingsContext.instance().isShowClosedTask());
+        editor.putBoolean(SHOW_CLOSED_TASK, SettingsContext.instance().isShowClosedTask());
+        editor.putBoolean(SHOW_ONLY_IMPORTANT_TASK, SettingsContext.instance().isShowOnlyImportantTask());
         editor.commit();
     }
 
@@ -127,6 +130,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         SettingsContext.instance().setShowClosedTask(true);
                     else
                         SettingsContext.instance().setShowClosedTask(false);
+                    return true;
+                }
+            });
+            preference = (SwitchPreference) findPreference("priority_switch");
+            preference.setChecked(SettingsContext.instance().isShowOnlyImportantTask());
+            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if(((Boolean)newValue).booleanValue())
+                        SettingsContext.instance().setShowOnlyImportantTask(true);
+                    else
+                        SettingsContext.instance().setShowOnlyImportantTask(false);
                     return true;
                 }
             });

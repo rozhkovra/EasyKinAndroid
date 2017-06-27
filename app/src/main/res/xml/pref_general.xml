@@ -5,5 +5,10 @@
         android:key="status_switch"
         android:summary="@string/pref_description_task_status"
         android:title="@string/pref_title_task_status" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="priority_switch"
+        android:summary="@string/pref_description_task_priority"
+        android:title="@string/pref_title_task_priority" />
 
 </PreferenceScreen>

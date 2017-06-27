@@ -106,6 +106,9 @@
     <string name="pref_title_task_status">Show closed task</string>
     <string name="pref_description_task_status">Show or not closed task in task list</string>
 
+    <string name="pref_title_task_priority">Show only important task</string>
+    <string name="pref_description_task_priority">Show only important or all tasks in task list</string>
+
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 

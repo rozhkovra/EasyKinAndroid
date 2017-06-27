@@ -7,6 +7,7 @@ package ru.rrozhkov.easykin.android.context;
 public class SettingsContext {
     private static SettingsContext context = null;
     private boolean showClosedTask = false;
+    private boolean showOnlyImportantTask;
 
     public static SettingsContext instance(){
         if(context==null){
@@ -24,5 +25,13 @@ public class SettingsContext {
 
     public void setShowClosedTask(boolean showClosedTask) {
         this.showClosedTask = showClosedTask;
+    }
+
+    public boolean isShowOnlyImportantTask() {
+        return showOnlyImportantTask;
+    }
+
+    public void setShowOnlyImportantTask(boolean showOnlyImportantTask) {
+        this.showOnlyImportantTask = showOnlyImportantTask;
     }
 }

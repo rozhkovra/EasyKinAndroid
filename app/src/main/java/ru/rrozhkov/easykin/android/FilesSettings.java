@@ -7,4 +7,6 @@ package ru.rrozhkov.easykin.android;
 public interface FilesSettings {
     String EASYKIN_SETTINGS = "easykinSettings";
     String EASYKIN_DUMP = "easykinDump.sql";
+    String SHOW_CLOSED_TASK = "showClosedTask";
+    String SHOW_ONLY_IMPORTANT_TASK = "showOnlyImportantTask";
 }
