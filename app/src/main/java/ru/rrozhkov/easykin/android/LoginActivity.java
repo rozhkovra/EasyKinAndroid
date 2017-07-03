@@ -27,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void attemptRestoreDump() {
         DumpManager.restoreDump(dbHelper);
+        Toast.makeText(this.getBaseContext(),"Sump was restored!",Toast.LENGTH_SHORT).show();
     }
 
     private void populateAutoComplete() {
