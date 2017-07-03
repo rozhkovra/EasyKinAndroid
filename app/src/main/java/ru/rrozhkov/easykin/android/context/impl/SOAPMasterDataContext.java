@@ -32,9 +32,4 @@ public class SOAPMasterDataContext extends MasterDataContext {
         TaskReplicator tReplicator = new TaskReplicator(this);
         tReplicator.execute();
     }
-
-    @Override
-    public void dump() {
-//        DumpManager.dump(this);
-    }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -60,10 +59,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         setTitle("EasyKin");
-
-
         initSettingsContext();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -80,21 +76,16 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-            Toast.makeText(this, "External SD card not mounted", Toast.LENGTH_LONG).show();
-        }
-        Toast.makeText(this, Environment.getExternalStorageDirectory().getAbsolutePath(), Toast.LENGTH_LONG).show();
     }
 
     private void refreshNavView() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-        navigationView.getMenu().add(0,0,0,"Все(0)");
+        navigationView.getMenu().add(0,0,0,"Все");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(0,category.getId(),0,category.getName()+"("+category.getId()+")");
+            navigationView.getMenu().add(0,category.getId(),0,category.getName());
         }
     }
 
@@ -102,12 +93,9 @@ public class MainActivity extends AppCompatActivity
     protected void onStop(){
         super.onStop();
 
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
         SharedPreferences settings = getSharedPreferences(FilesSettings.EASYKIN_SETTINGS, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("showClosedTask", SettingsContext.instance().isShowClosedTask());
-        // Commit the edits!
         editor.commit();
     }
 
@@ -130,9 +118,12 @@ public class MainActivity extends AppCompatActivity
             beans = FilterUtil.filter(beans, categoryFilter);
             adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
-        }else
+            setTitle(getTitle()+"("+beans.size()+")");
+        }else {
             adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
+            setTitle("EasyKin");
+        }
 
         listView = (ListView) findViewById(R.id.taskLst);
         listView.setAdapter(adapter);
@@ -150,19 +141,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
@@ -182,13 +168,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         String name = item.getTitle().toString();
 
         if(id==5){
             categoryFilter = null;
-            setTitle("EasyKin\\"+name);
+            setTitle(name);
             Collection<IPayment> payments = context.finance();
             ArrayAdapter<String> adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
@@ -197,7 +182,7 @@ public class MainActivity extends AppCompatActivity
         }
         if(id==6){
             categoryFilter = null;
-            setTitle("EasyKin\\"+name);
+            setTitle(name);
             Collection<IPayment> payments = context.factPayments();
             ArrayAdapter<String> adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new PaymentArrayConverter().convert(payments));
@@ -210,7 +195,7 @@ public class MainActivity extends AppCompatActivity
             categoryFilter = null;
         }
         if(id>0 && id!=9 && id!=5 && id!=6 ){
-            setTitle("EasyKin\\"+name);
+            setTitle(name);
             categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id,name));
         }
 
@@ -239,7 +224,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(final Boolean success) {
             MainActivity.this.refresh();
             MainActivity.this.context.replicate();
-//            MainActivity.this.context.dump();
         }
     }
 }
