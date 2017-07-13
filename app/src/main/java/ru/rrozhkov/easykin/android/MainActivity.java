@@ -79,13 +79,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshNavView() {
+        Collection<ITask> beans = context.tasks();
+        if(!SettingsContext.instance().isShowClosedTask()){
+            beans = FilterUtil.filter(beans, TaskFilterFactory.status(Status.OPEN));
+        }
+        if(SettingsContext.instance().isShowOnlyImportantTask()){
+            beans = FilterUtil.filter(beans, TaskFilterFactory.priority(Priority.IMPOTANT_FAST));
+        }
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-        navigationView.getMenu().add(0,0,0,"Все");
+        navigationView.getMenu().add(0,0,0,"Все ("+beans.size()+")");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(0,category.getId(),0,category.getName());
+            navigationView.getMenu().add(0,category.getId(),0,category.getName()+" ("+
+                    FilterUtil.filter(beans, TaskFilterFactory.category(category)).size()+")");
         }
     }
 
@@ -118,7 +127,7 @@ public class MainActivity extends AppCompatActivity
             beans = FilterUtil.filter(beans, categoryFilter);
             adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayConverter().convert(beans));
-            setTitle(getTitle()+"("+beans.size()+")");
+            setTitle(getTitle());
         }else {
             adapter = new ArrayAdapter(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, new TaskArrayStatusConverter().convert(beans));
