@@ -2,10 +2,11 @@ package ru.rrozhkov.easykin.android.context;
 
 import java.util.Collection;
 
+import ru.rrozhkov.easykin.fin.payment.impl.filter.PaymentFilterFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.fin.payment.PaymentStatus;
-import ru.rrozhkov.easykin.model.fin.payment.impl.filter.PaymentFilterFactory;
+
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
