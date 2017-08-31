@@ -94,8 +94,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().add(0,0,0,"Все ("+beans.size()+")");
         Collection<ICategory> categories = context.categories();
         for(ICategory category : categories){
-            navigationView.getMenu().add(0,category.getId(),0,category.getName()+" ("+
-                    FilterUtil.filter(beans, TaskFilterFactory.category(category)).size()+")");
+            if(category.getId()==5) {
+                Collection<IPayment> payments = context.finance();
+                navigationView.getMenu().add(0, category.getId(), 0, category.getName() + " (" +
+                        payments.size() + ")");
+
+            }else {
+                navigationView.getMenu().add(0, category.getId(), 0, category.getName() + " (" +
+                        FilterUtil.filter(beans, TaskFilterFactory.category(category)).size() + ")");
+            }
         }
     }
 

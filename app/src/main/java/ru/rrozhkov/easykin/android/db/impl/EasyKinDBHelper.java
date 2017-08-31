@@ -32,6 +32,12 @@ public class EasyKinDBHelper extends SQLiteOpenHelper {
                 + "priority integer, "
                 + "category integer, "
                 + "status integer)");
+        db.execSQL("create table payment ( "
+                + "id integer primary key, "
+                + "comment text, "
+                + "category integer, "
+                + "status integer, "
+                + "amount real)");
     }
 
     @Override

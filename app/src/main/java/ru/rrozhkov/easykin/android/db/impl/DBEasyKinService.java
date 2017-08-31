@@ -32,9 +32,13 @@ public class DBEasyKinService implements EasyKinService {
         return CollectionUtil.create();
     }
     public Collection<IPayment> payments() {
+        try {
+            return new PaymentHandler().select();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return CollectionUtil.create();
     }
-    @Override
     public Collection<IPerson> persons() {
         try {
             return new PersonHandler().select();
