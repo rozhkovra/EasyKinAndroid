@@ -1,7 +1,7 @@
 package ru.rrozhkov.easykin.android.model.category.impl.convert;
 
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.category.ICategory;
-import ru.rrozhkov.lib.convert.IConverter;
 
 /**
  * Created by rrozhkov on 6/19/2017.

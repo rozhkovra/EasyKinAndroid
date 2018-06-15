@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
-import ru.rrozhkov.lib.convert.IConverter;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 
 /**
  * Created by rrozhkov on 6/1/2017.

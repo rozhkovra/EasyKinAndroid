@@ -1,7 +1,7 @@
 package ru.rrozhkov.easykin.android.model.person.impl.convert;
 
 import ru.rrozhkov.easykin.model.person.IPerson;
-import ru.rrozhkov.lib.convert.IConverter;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 
 /**
  * Created by rrozhkov on 6/19/2017.

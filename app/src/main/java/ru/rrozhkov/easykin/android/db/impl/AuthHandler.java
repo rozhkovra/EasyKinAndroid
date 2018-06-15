@@ -6,7 +6,7 @@ import java.util.Collection;
 import ru.rrozhkov.easykin.android.model.person.impl.convert.DBPersonConverter;
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.lib.android.crypt.AndroidEncrypter;
-import ru.rrozhkov.lib.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
 
 /**
  * Created by rrozhkov on 6/5/2017.

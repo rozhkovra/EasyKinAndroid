@@ -21,6 +21,7 @@ import java.util.Date;
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.impl.SOAPMasterDataContext;
 import ru.rrozhkov.easykin.android.ws.client.task.EasyKinTaskService;
+import ru.rrozhkov.easykin.core.util.DateUtil;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.task.ITask;
@@ -30,6 +31,8 @@ import ru.rrozhkov.easykin.model.task.impl.TaskFactory;
 
 public class AddTaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final TaskFactory taskFactory = TaskFactory.instance();
+    final static private CategoryFactory categoryFactory = new CategoryFactory();
     private MasterDataContext context = new SOAPMasterDataContext();
     private EditText editText;
     private ICategory category = null;
@@ -52,8 +55,8 @@ public class AddTaskActivity extends AppCompatActivity
                     return;
                 }
                 EasyKinTaskService taskService = new EasyKinTaskService();
-                ITask task = TaskFactory.createTask(-1,editText.getText().toString()
-                        , new Date(), new Date(), Priority.IMPOTANT_FAST, category, null, Status.OPEN);
+                ITask task = taskFactory.createTask(-1,editText.getText().toString()
+                        , DateUtil.today(), DateUtil.today(), Priority.IMPOTANT_FAST, category, null, Status.OPEN);
                 int id = taskService.add(task);
                 if(id!=-1) {
                     Toast.makeText(AddTaskActivity.this.getBaseContext(), "Task added. Refresh task list!", Toast.LENGTH_LONG).show();
@@ -118,7 +121,7 @@ public class AddTaskActivity extends AppCompatActivity
         int id = item.getItemId();
         String name = item.getTitle().toString();
 
-        category = CategoryFactory.create(id, name);
+        category = categoryFactory.create(id, name);
         setTitle("Add task for "+name);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

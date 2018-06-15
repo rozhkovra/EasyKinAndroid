@@ -10,13 +10,15 @@ import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Priority;
 import ru.rrozhkov.easykin.model.task.Status;
 import ru.rrozhkov.easykin.model.task.impl.TaskFactory;
-import ru.rrozhkov.lib.convert.IConverter;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 
 /**
  * Created by rrozhkov on 2/20/2017.
  */
 
 public class SoapTaskConverter implements IConverter<SoapObject, ITask> {
+    private static final TaskFactory taskFactory = TaskFactory.instance();
+    final static private CategoryFactory categoryFactory = new CategoryFactory();
     @Override
     public ITask convert(SoapObject object) {
         Date closeDate = null;
@@ -25,13 +27,13 @@ public class SoapTaskConverter implements IConverter<SoapObject, ITask> {
         }catch(RuntimeException re){
 
         }
-        ITask task =  TaskFactory.createTask(
+        ITask task =  taskFactory.createTask(
                 Integer.valueOf(object.getProperty("id").toString())
                 , object.getProperty("name").toString()
                 , DateUtil.parseWs(object.getProperty("createDate").toString())
                 , DateUtil.parseWs(object.getProperty("planDate").toString())
                 , Priority.priority(Integer.valueOf(object.getProperty("priority").toString()))
-                , CategoryFactory.create(Integer.valueOf(object.getProperty("category").toString()), object.getProperty("categoryName").toString())
+                , categoryFactory.create(Integer.valueOf(object.getProperty("category").toString()), object.getProperty("categoryName").toString())
                 , closeDate
                 , Status.status(Integer.valueOf(object.getProperty("status").toString()))
         );

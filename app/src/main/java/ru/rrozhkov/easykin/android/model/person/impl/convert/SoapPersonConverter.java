@@ -4,19 +4,21 @@ import org.ksoap2.serialization.SoapObject;
 
 import java.util.Date;
 
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.person.Sex;
 import ru.rrozhkov.easykin.model.person.impl.PersonFactory;
-import ru.rrozhkov.lib.convert.IConverter;
+
 
 /**
  * Created by rrozhkov on 2/20/2017.
  */
 
 public class SoapPersonConverter implements IConverter<SoapObject, IPerson> {
+    final static private PersonFactory personFactory = new PersonFactory();
     @Override
     public IPerson convert(SoapObject object) {
-        return PersonFactory.create(
+        return personFactory.create(
                 Integer.valueOf(object.getPropertySafelyAsString("id"))
                 ,object.getPropertySafelyAsString("surname")
                 ,object.getPropertySafelyAsString("name")

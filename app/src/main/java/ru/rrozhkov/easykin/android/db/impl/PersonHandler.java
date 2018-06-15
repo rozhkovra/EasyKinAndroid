@@ -5,9 +5,10 @@ import android.database.Cursor;
 
 import ru.rrozhkov.easykin.android.model.person.impl.convert.DBPersonConverter;
 import ru.rrozhkov.easykin.android.model.person.impl.convert.PersonContentConverter;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.lib.android.db.impl.EntityHandler;
-import ru.rrozhkov.lib.convert.IConverter;
+
 
 /**
  * Created by rrozhkov on 6/1/2017.

@@ -2,10 +2,9 @@ package ru.rrozhkov.easykin.android.model.payment.impl.convert;
 
 import java.util.Collection;
 
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
-import ru.rrozhkov.easykin.model.task.ITask;
-import ru.rrozhkov.lib.collection.CollectionUtil;
-import ru.rrozhkov.lib.convert.IConverter;
 
 /**
  * Created by rrozhkov on 2/20/2017.

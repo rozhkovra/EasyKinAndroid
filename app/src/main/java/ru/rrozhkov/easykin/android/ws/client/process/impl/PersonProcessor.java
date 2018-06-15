@@ -5,8 +5,9 @@ import org.ksoap2.serialization.SoapObject;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.model.person.impl.convert.SoapPersonConverter;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
 import ru.rrozhkov.easykin.model.person.IPerson;
-import ru.rrozhkov.lib.collection.CollectionUtil;
+
 
 /**
  * Created by rrozhkov on 6/2/2017.

@@ -10,8 +10,8 @@ import ru.rrozhkov.easykin.model.fin.payment.PaymentStatus;
 import ru.rrozhkov.easykin.model.person.IPerson;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Status;
-import ru.rrozhkov.lib.collection.CollectionUtil;
-import ru.rrozhkov.lib.filter.util.FilterUtil;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.filter.util.FilterUtil;
 
 /**
  * Created by rrozhkov on 2/20/2017.
@@ -22,6 +22,7 @@ public abstract class MasterDataContext {
     protected Collection<ITask> tasks = CollectionUtil.create();
     protected Collection<IPayment> payments = CollectionUtil.create();
     protected Collection<IPerson> persons = CollectionUtil.create();
+    private static final PaymentFilterFactory paymentFilterFactory = PaymentFilterFactory.instance();
 
     abstract public void init();
 
@@ -44,11 +45,11 @@ public abstract class MasterDataContext {
     }
 
     public Collection<IPayment> finance() {
-        return FilterUtil.filter(payments(), PaymentFilterFactory.status(PaymentStatus.PLAN), PaymentFilterFactory.noFree());
+        return FilterUtil.filter(payments(), paymentFilterFactory.status(PaymentStatus.PLAN), paymentFilterFactory.noFree());
     }
 
     public Collection<IPayment> factPayments() {
-        return FilterUtil.filter(payments(), PaymentFilterFactory.status(PaymentStatus.FACT), PaymentFilterFactory.noFree());
+        return FilterUtil.filter(payments(), paymentFilterFactory.status(PaymentStatus.FACT), paymentFilterFactory.noFree());
     }
     public Status[] statuses(){
         return new ru.rrozhkov.easykin.model.task.Status[]{

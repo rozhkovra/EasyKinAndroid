@@ -6,16 +6,17 @@ import java.util.Date;
 
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.impl.TaskFactory;
-import ru.rrozhkov.lib.convert.IConverter;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 
 /**
  * Created by rrozhkov on 5/18/2017.
  */
 
 public class DBTaskConverter implements IConverter<Cursor, ITask> {
+    private static final TaskFactory taskFactory = TaskFactory.instance();
     @Override
     public ITask convert(Cursor cursor) {
-        return TaskFactory.createTask(cursor.getInt(cursor.getColumnIndex("id"))
+        return taskFactory.createTask(cursor.getInt(cursor.getColumnIndex("id"))
                 , cursor.getString(cursor.getColumnIndex("name"))
                 , new Date()
                 , new Date()

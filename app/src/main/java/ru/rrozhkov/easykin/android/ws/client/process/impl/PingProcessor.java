@@ -4,7 +4,8 @@ import org.ksoap2.serialization.SoapObject;
 
 import java.util.Collection;
 
-import ru.rrozhkov.lib.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
+
 
 /**
  * Created by rrozhkov on 2/17/2017.

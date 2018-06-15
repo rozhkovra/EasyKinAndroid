@@ -5,8 +5,9 @@ import org.ksoap2.serialization.SoapObject;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.model.category.impl.convert.SoapCategoryConverter;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
 import ru.rrozhkov.easykin.model.category.ICategory;
-import ru.rrozhkov.lib.collection.CollectionUtil;
+
 
 /**
  * Created by rrozhkov on 2/17/2017.

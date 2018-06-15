@@ -2,8 +2,8 @@ package ru.rrozhkov.easykin.android.model.person.impl.convert;
 
 import android.content.ContentValues;
 
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.person.IPerson;
-import ru.rrozhkov.lib.convert.IConverter;
 
 /**
  * Created by rrozhkov on 5/30/2017.

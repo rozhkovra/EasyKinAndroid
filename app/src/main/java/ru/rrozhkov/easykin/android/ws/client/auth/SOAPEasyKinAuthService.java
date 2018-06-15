@@ -2,8 +2,8 @@ package ru.rrozhkov.easykin.android.ws.client.auth;
 
 import ru.rrozhkov.easykin.android.service.EasyKinAuthService;
 import ru.rrozhkov.easykin.android.ws.client.auth.process.impl.AuthProcessor;
-import ru.rrozhkov.lib.collection.CollectionUtil;
-import ru.rrozhkov.lib.ws.process.IProcessor;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.ws.process.IProcessor;
 
 /**
  * Created by rrozhkov on 2/28/2017.
@@ -16,6 +16,6 @@ public class SOAPEasyKinAuthService implements EasyKinAuthService{
     public int auth(String user, String pass){
         final IProcessor processor = new AuthProcessor(user, pass, NAMESPACE, URL);
         processor.process();
-        return (Integer)CollectionUtil.get(processor.result(),0);
+        return (Integer) CollectionUtil.get(processor.result(),0);
     }
 }

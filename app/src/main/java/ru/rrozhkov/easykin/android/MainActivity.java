@@ -26,22 +26,24 @@ import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayConverter;
 import ru.rrozhkov.easykin.android.model.task.impl.convert.TaskArrayStatusConverter;
+import ru.rrozhkov.easykin.core.filter.IFilter;
+import ru.rrozhkov.easykin.core.filter.util.FilterUtil;
 import ru.rrozhkov.easykin.model.category.CategoryFactory;
 import ru.rrozhkov.easykin.model.category.ICategory;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Priority;
 import ru.rrozhkov.easykin.model.task.Status;
-
 import ru.rrozhkov.easykin.task.impl.filter.TaskFilterFactory;
-import ru.rrozhkov.lib.filter.IFilter;
-import ru.rrozhkov.lib.filter.util.FilterUtil;
+
 
 import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_CLOSED_TASK;
 import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_ONLY_IMPORTANT_TASK;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    final private static TaskFilterFactory taskFilterFactory = TaskFilterFactory.instance();
+    final static private CategoryFactory categoryFactory = new CategoryFactory();
     private ListView listView;
     private MasterDataContext context;
     private IFilter categoryFilter = null;
@@ -82,10 +84,10 @@ public class MainActivity extends AppCompatActivity
     private void refreshNavView() {
         Collection<ITask> beans = context.tasks();
         if(!SettingsContext.instance().isShowClosedTask()){
-            beans = FilterUtil.filter(beans, TaskFilterFactory.status(Status.OPEN));
+            beans = FilterUtil.filter(beans, taskFilterFactory.status(Status.OPEN));
         }
         if(SettingsContext.instance().isShowOnlyImportantTask()){
-            beans = FilterUtil.filter(beans, TaskFilterFactory.priority(Priority.IMPOTANT_FAST));
+            beans = FilterUtil.filter(beans, taskFilterFactory.priority(Priority.IMPOTANT_FAST));
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
             }else {
                 navigationView.getMenu().add(0, category.getId(), 0, category.getName() + " (" +
-                        FilterUtil.filter(beans, TaskFilterFactory.category(category)).size() + ")");
+                        FilterUtil.filter(beans, taskFilterFactory.category(category)).size() + ")");
             }
         }
     }
@@ -125,10 +127,10 @@ public class MainActivity extends AppCompatActivity
     private void rereshTaskLst(){
         Collection<ITask> beans = context.tasks();
         if(!SettingsContext.instance().isShowClosedTask()){
-            beans = FilterUtil.filter(beans, TaskFilterFactory.status(Status.OPEN));
+            beans = FilterUtil.filter(beans, taskFilterFactory.status(Status.OPEN));
         }
         if(SettingsContext.instance().isShowOnlyImportantTask()){
-            beans = FilterUtil.filter(beans, TaskFilterFactory.priority(Priority.IMPOTANT_FAST));
+            beans = FilterUtil.filter(beans, taskFilterFactory.priority(Priority.IMPOTANT_FAST));
         }
         ArrayAdapter<String> adapter;
         if(categoryFilter!=null){
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity
         }
         if(id>0 && id!=9 && id!=5 && id!=6 ){
             setTitle(name);
-            categoryFilter = TaskFilterFactory.category(CategoryFactory.create(id,name));
+            categoryFilter = taskFilterFactory.category(categoryFactory.create(id,name));
         }
 
         rereshTaskLst();

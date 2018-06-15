@@ -2,10 +2,11 @@ package ru.rrozhkov.easykin.android.model.payment.impl.convert;
 
 import android.content.ContentValues;
 
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.easykin.model.fin.payment.PaymentCategory;
 import ru.rrozhkov.easykin.model.fin.payment.PaymentStatus;
-import ru.rrozhkov.lib.convert.IConverter;
+
 
 /**
  * Created by rrozhkov on 5/30/2017.

@@ -5,8 +5,9 @@ import org.ksoap2.serialization.SoapObject;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.SoapPaymentConverter;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
-import ru.rrozhkov.lib.collection.CollectionUtil;
+
 
 /**
  * Created by rrozhkov on 2/17/2017.

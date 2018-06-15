@@ -8,9 +8,10 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
-import ru.rrozhkov.lib.collection.CollectionUtil;
-import ru.rrozhkov.lib.convert.IConverter;
-import ru.rrozhkov.lib.db.IDBManager;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.convert.IConverter;
+import ru.rrozhkov.easykin.core.convert.IEntityConverter;
+import ru.rrozhkov.easykin.core.db.IDBManager;
 
 /**
  * Created by rrozhkov on 5/18/2017.
@@ -74,5 +75,10 @@ public class DBManager implements IDBManager<Cursor, ContentValues> {
         int delCount = db.delete(tableName,null,null);
         dbHelper.close();
         return delCount;
+    }
+
+    @Override
+    public <T> Collection<T> select(String s, IEntityConverter<T> iEntityConverter) throws SQLException {
+        return null;
     }
 }

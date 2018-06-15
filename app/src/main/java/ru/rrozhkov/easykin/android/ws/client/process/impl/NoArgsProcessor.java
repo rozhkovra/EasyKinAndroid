@@ -5,7 +5,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import ru.rrozhkov.lib.ws.process.impl.Processor;
+import ru.rrozhkov.easykin.core.ws.process.impl.Processor;
+
 
 /**
  * Created by rrozhkov on 3/2/2017.

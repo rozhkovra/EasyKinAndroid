@@ -7,14 +7,15 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.Collection;
 
-import ru.rrozhkov.lib.collection.CollectionUtil;
-import ru.rrozhkov.lib.ws.process.impl.Processor;
+import ru.rrozhkov.easykin.core.collection.CollectionUtil;
+import ru.rrozhkov.easykin.core.ws.process.impl.Processor;
+
 
 /**
  * Created by rrozhkov on 3/9/2017.
  */
 
-public class AuthProcessor extends Processor{
+public class AuthProcessor extends Processor {
     private static final String METHOD_NAME = "auth";
     private static final String SOAP_ACTION = "http://rrozhkov.ru/easykin/auth";
     private String username;

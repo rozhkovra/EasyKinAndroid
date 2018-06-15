@@ -3,10 +3,11 @@ package ru.rrozhkov.easykin.android.model.task.impl.convert;
 import org.ksoap2.serialization.SoapObject;
 
 import ru.rrozhkov.easykin.android.ws.client.util.DateUtil;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.task.ITask;
 import ru.rrozhkov.easykin.model.task.Priority;
 import ru.rrozhkov.easykin.model.task.Status;
-import ru.rrozhkov.lib.convert.IConverter;
+
 
 /**
  * Created by rrozhkov on 2/20/2017.

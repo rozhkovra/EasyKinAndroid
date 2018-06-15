@@ -5,9 +5,10 @@ import android.database.Cursor;
 
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.DBPaymentConverter;
 import ru.rrozhkov.easykin.android.model.payment.impl.convert.PaymentContentConverter;
+import ru.rrozhkov.easykin.core.convert.IConverter;
 import ru.rrozhkov.easykin.model.fin.payment.IPayment;
 import ru.rrozhkov.lib.android.db.impl.EntityHandler;
-import ru.rrozhkov.lib.convert.IConverter;
+
 
 /**
  * Created by rrozhkov on 6/1/2017.
