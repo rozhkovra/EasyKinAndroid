@@ -1,4 +1,4 @@
-package ru.rrozhkov.easykin.android;
+package ru.rrozhkov.easykin.android.task;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import java.util.Collection;
 
+import ru.rrozhkov.easykin.android.FilesSettings;
+import ru.rrozhkov.easykin.android.R;
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
 import ru.rrozhkov.easykin.android.context.impl.MasterDataContextFactory;
@@ -40,7 +42,7 @@ import ru.rrozhkov.easykin.task.impl.filter.TaskFilterFactory;
 import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_CLOSED_TASK;
 import static ru.rrozhkov.easykin.android.FilesSettings.SHOW_ONLY_IMPORTANT_TASK;
 
-public class MainActivity extends AppCompatActivity
+public class TaskListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     final private static TaskFilterFactory taskFilterFactory = TaskFilterFactory.instance();
     final static private CategoryFactory categoryFactory = new CategoryFactory();
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
         new ManageDataTask().execute((Void) null);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_task_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("EasyKin");
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+//                Intent intent = new Intent(TaskListActivity.this, AddTaskActivity.class);
 //                startActivity(intent);
 //            }
 //        });
@@ -234,15 +236,15 @@ public class MainActivity extends AppCompatActivity
     public class ManageDataTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
-            MainActivity.this.context = MasterDataContextFactory.instance(online);
-            MainActivity.this.context.init();
+            TaskListActivity.this.context = MasterDataContextFactory.instance(online);
+            TaskListActivity.this.context.init();
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            MainActivity.this.refresh();
-            MainActivity.this.context.replicate();
+            TaskListActivity.this.refresh();
+            TaskListActivity.this.context.replicate();
         }
     }
 }

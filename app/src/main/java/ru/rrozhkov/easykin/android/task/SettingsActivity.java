@@ -1,4 +1,4 @@
-package ru.rrozhkov.easykin.android;
+package ru.rrozhkov.easykin.android.task;
 
 
 import android.annotation.TargetApi;
@@ -16,6 +16,8 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import ru.rrozhkov.easykin.android.AppCompatPreferenceActivity;
+import ru.rrozhkov.easykin.android.R;
 import ru.rrozhkov.easykin.android.context.SettingsContext;
 
 import static ru.rrozhkov.easykin.android.FilesSettings.EASYKIN_SETTINGS;

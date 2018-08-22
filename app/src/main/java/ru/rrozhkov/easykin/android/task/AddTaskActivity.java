@@ -1,4 +1,4 @@
-package ru.rrozhkov.easykin.android;
+package ru.rrozhkov.easykin.android.task;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,8 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Collection;
-import java.util.Date;
 
+import ru.rrozhkov.easykin.android.R;
 import ru.rrozhkov.easykin.android.context.MasterDataContext;
 import ru.rrozhkov.easykin.android.context.impl.SOAPMasterDataContext;
 import ru.rrozhkov.easykin.android.ws.client.task.EasyKinTaskService;
