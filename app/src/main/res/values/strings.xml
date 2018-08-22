@@ -187,4 +187,16 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="title_activity_dashboard">EasyKin</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="task_content">Tasks\n2 просрочено</string>
+    <string name="work_content">Works\n0/8 часы</string>
+    <string name="finance_content">Finance\nК оплате 10 482,19 </string>
+    <string name="service_content">Services\nКоммунальные услуги 9 501,89</string>
+    <string name="payment_content">Payments\nОплачено 36 772,00 </string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_finance_list">FinanceListActivity</string>
 </resources>

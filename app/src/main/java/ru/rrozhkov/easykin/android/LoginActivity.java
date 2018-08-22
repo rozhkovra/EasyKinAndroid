@@ -37,6 +37,7 @@ import ru.rrozhkov.easykin.android.db.impl.DumpManager;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBHelper;
 import ru.rrozhkov.easykin.android.db.impl.EasyKinDBManager;
 import ru.rrozhkov.easykin.android.service.EasyKinAuthService;
+import ru.rrozhkov.easykin.android.task.TaskListActivity;
 import ru.rrozhkov.easykin.android.ws.client.auth.SOAPEasyKinAuthService;
 import ru.rrozhkov.easykin.android.ws.client.util.ServiceUtil;
 
@@ -333,7 +334,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                 intent.putExtra("online",online);
                 startActivity(intent);
             } else {
