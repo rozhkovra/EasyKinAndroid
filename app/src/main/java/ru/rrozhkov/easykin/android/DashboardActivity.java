@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import ru.rrozhkov.easykin.android.fin.FinanceListActivity;
+import ru.rrozhkov.easykin.android.payment.PaymentListActivity;
 import ru.rrozhkov.easykin.android.task.TaskListActivity;
 
 /**
@@ -167,6 +168,9 @@ public class DashboardActivity extends AppCompatActivity {
                 break;
             case R.id.finances:
                 intent = new Intent(this, FinanceListActivity.class);
+                break;
+            case R.id.payments:
+                intent = new Intent(this, PaymentListActivity.class);
                 break;
         }
         if (intent != null) {

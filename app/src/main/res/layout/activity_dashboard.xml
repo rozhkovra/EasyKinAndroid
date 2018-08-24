@@ -99,7 +99,7 @@
             android:background="@color/black_overlay" />
 
         <TextView
-            android:id="@+id/payment_content"
+            android:id="@+id/payments"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center"
@@ -108,6 +108,8 @@
             android:textColor="@android:color/black"
             android:textSize="25sp"
             android:textStyle="bold"
+            android:clickable="true"
+            android:onClick="click"
             android:background="@drawable/custom_rect"/>
         </LinearLayout>
     </FrameLayout>
