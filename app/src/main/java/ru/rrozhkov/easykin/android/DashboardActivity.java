@@ -12,6 +12,7 @@ import android.view.View;
 import ru.rrozhkov.easykin.android.fin.FinanceListActivity;
 import ru.rrozhkov.easykin.android.payment.PaymentListActivity;
 import ru.rrozhkov.easykin.android.task.TaskListActivity;
+import ru.rrozhkov.easykin.android.work.WorkListActivity;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -171,6 +172,9 @@ public class DashboardActivity extends AppCompatActivity {
                 break;
             case R.id.payments:
                 intent = new Intent(this, PaymentListActivity.class);
+                break;
+            case R.id.works:
+                intent = new Intent(this, WorkListActivity.class);
                 break;
         }
         if (intent != null) {
