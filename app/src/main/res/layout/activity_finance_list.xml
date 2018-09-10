@@ -32,7 +32,10 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_finance_list" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/financeList" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
